@@ -1,0 +1,600 @@
+{
+	"info": {
+		"_postman_id": "80d1b9e7-def5-4453-a504-5dc2571f819c",
+		"name": "Avengers Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2565921"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Sign Up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"c0827838@mylambton.ca\",\n    \"password\": \"password\",\n    \"firstName\":\"Sagar\",\n    \"lastName\":\"Saini\",\n    \"jobTitle\":\"VP Engineering\",\n    \"role\":\"Member\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/signup",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"vergel@gmail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/me",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/user/6377b4fb35226ee4c6805a35",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"6377b4fb35226ee4c6805a35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n    \"firstName\":\"Vergel\",\n    \"lastName\":\"dela Cruz\",\n    \"jobTitle\":\"Unpaid Intern\",\n    \"role\":\"Member\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/user/6377b4fb35226ee4c6805a35",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"6377b4fb35226ee4c6805a35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/user/63779d8a91d3942a121bd7ba",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"user",
+								"63779d8a91d3942a121bd7ba"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "Get Projects",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/projects",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n  \"name\": \"MAD1635\",\n  \"description\": \"Javascript Project\",\n  \"status\":\"Not Started\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/project/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/project/6377bc9cf148c060f201101f",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								"6377bc9cf148c060f201101f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Project",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n  \"name\": \"MAD1635\",\n  \"description\": \"Javascript Project\",\n  \"status\":\"Completed\",\n  \"hours\": 10,\n  \"cost\" : 1000.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/project/6377ad17965267b0dd476e78",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								"6377ad17965267b0dd476e78"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/project/6377bbfed52fda4b6eb1cc01",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								"6377bbfed52fda4b6eb1cc01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Project Member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n  \"memberId\": \"6377bece5696295176c3c995\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/project/6377bc9cf148c060f201101f/member",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								"6377bc9cf148c060f201101f",
+								"member"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "Get Tasks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/tasks",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Design\",\n    \"description\": \"Create a design of the application\",\n    \"status\": \"Not Started\",\n    \"startDate\": \"2022-12-01\",\n    \"endDate\": \"2022-12-20\",\n    \"assignedTo\":\"6377b4fb35226ee4c6805a35\",\n    \"hourlyRate\": 10.50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/project/6377ad17965267b0dd476e78/task/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								"6377ad17965267b0dd476e78",
+								"task",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Task with Dependent",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Build Login Page\",\n    \"description\": \"Develop the Login Page\",\n    \"status\": \"Not Started\",\n    \"startDate\": \"2022-12-01\",\n    \"endDate\": \"2022-12-20\",\n    \"assignedTo\":\"6377b4fb35226ee4c6805a35\",\n    \"hourlyRate\": 10.50,\n    \"dependentTask\": \"6377b873d17cecba276eabb8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/project/6377ad17965267b0dd476e78/task/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"project",
+								"6377ad17965267b0dd476e78",
+								"task",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/task/6377be2b188479d80c5b6ea0",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"task",
+								"6377be2b188479d80c5b6ea0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Task",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n  \"name\": \"Design\",\n  \"description\": \"Create a design of the applicaiton\",\n  \"status\":\"Completed\",\n  \"startDate\": \"2022-12-01\",\n  \"endDate\": \"2022-12-20\",\n  \"assignedTo\":\"6377b4fb35226ee4c6805a35\",\n  \"hourlyRate\": 12.50,\n  \"hoursWorked\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/task/6377be2b188479d80c5b6ea0",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"task",
+								"6377be2b188479d80c5b6ea0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/task/6377bd999cedc6fd8ee99ae8",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"task",
+								"6377bd999cedc6fd8ee99ae8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
