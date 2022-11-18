@@ -15,6 +15,6 @@ This repository has two major components.
 2. npm start
 
 # To test REST API
-1. Download and install Postman
-2. Download the postman collection "Avengers Project.postman_collection" in the postman folder to test the REST API.
-3. Import the collection
+1. Download and install Postman.
+2. Download the postman collection "Avengers Project.postman_collection" from the postman folder.
+3. Import the collection into Postman.
