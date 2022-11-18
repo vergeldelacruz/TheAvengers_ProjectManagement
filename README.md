@@ -7,8 +7,8 @@ This repository has two major components.
 
 # To run React Native App
 1. cd mobile
-2. mpm run ios (for Mac)
-3. run android (for Wndows)
+2. npm run ios (for Mac)
+3. npm run android (for Wndows)
 
 # To run REST API
 1. cd server
