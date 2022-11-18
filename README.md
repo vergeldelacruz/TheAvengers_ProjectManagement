@@ -6,10 +6,9 @@ This repository has two major components.
 2. server - the nodejs REST API
 
 # To run React Native App
-cd mobile
-
-1. mpm run ios (for Mac)
-2. run android (for Wndows)
+1. cd mobile
+2. mpm run ios (for Mac)
+3. run android (for Wndows)
 
 # To run REST API
 1. cd server
