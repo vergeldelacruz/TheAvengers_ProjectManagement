@@ -7,11 +7,15 @@ This repository has two major components.
 
 # To run React Native App
 cd mobile
-mpm run ios (for Mac)
-npm run android (for Wndows)
+
+1. mpm run ios (for Mac)
+2. run android (for Wndows)
 
 # To run REST API
-cd server
-npm start
+1. cd server
+2. npm start
 
-Download the postman collection "Avengers Project.postman_collection" in the postman folder to test the REST API.
+# To test REST API
+1. Download and install Postman
+2. Download the postman collection "Avengers Project.postman_collection" in the postman folder to test the REST API.
+3. Import the collection
