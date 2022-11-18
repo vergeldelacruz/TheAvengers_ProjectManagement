@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "80d1b9e7-def5-4453-a504-5dc2571f819c",
+		"_postman_id": "44c379ae-b6d9-4b65-aefe-5655703bfcdd",
 		"name": "Avengers Project",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "2565921"
@@ -595,6 +595,10 @@
 			"key": "token",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "URL",
+			"value": "http://localhost:3000"
 		}
 	]
 }
