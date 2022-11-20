@@ -1,20 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from "expo-font";
+import { AppNavigation } from "./navigation";
+import { fontFiles } from "./theme/fonts";
+import { Store } from "./store";
+import { Provider } from "react-redux";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Welcome to Avengers Project Management System</Text>
-      <StatusBar style="auto" />
-    </View>
-  ); 
-}
+  // fonts loading
+  const [fontsLoaded] = useFonts(fontFiles);
+  if (!fontsLoaded) return null;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  return <Provider store={Store}>
+    <AppNavigation />
+  </Provider>
+}
