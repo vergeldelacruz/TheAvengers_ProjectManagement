@@ -1,12 +1,11 @@
 import React from 'react'
 import { SafeAreaView, Text, View } from 'react-native'
-import Header from '../components/common/header'
 
-export default function Home() {
+export default function Register() {
   return (
     <SafeAreaView>
       <View>
-        <Header userFirstName={'Litson Thomas'}/>
+        <Text>Register</Text>
       </View>
     </SafeAreaView>
   )

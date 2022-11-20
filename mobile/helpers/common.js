@@ -2,27 +2,42 @@ import * as Haptics from 'expo-haptics';
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RectButton } from 'react-native-gesture-handler';
-import { Animated } from 'react-native';
+import { Animated, Text, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
 import { lightColors } from '../theme/colors';
 import { commonStyles } from '../theme/styles';
+import Constants from 'expo-constants';
+
+export const API_URL = Constants.expoConfig.extra.apiUrl;
 
 const LocalStorage = new Storage({
     size: 1000,
     storageBackend: AsyncStorage,
 });
+
 const SESSION_STORAGE_KEY = 'avengers-projects-user-session';
+const THEME_STORAGE_KEY = 'avengers-projects-theme';
 
 export const LightHaptics = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
 }
 
-// export const setSessionInfoInLocal = async (user) => {
-//     LocalStorage.save({
-//         key: SESSION_STORAGE_KEY,
-//         data: user,
-//     });
-// }
+export const setTheme = async (theme) => {
+    console.log('setTheme => ', theme);
+    LocalStorage.save({
+        key: THEME_STORAGE_KEY,
+        data: theme,
+    });
+}
+
+export const getTheme = async () => {
+    let theme = await LocalStorage.load({
+        key: THEME_STORAGE_KEY,
+    }).catch((err) => {
+        console.log(err.message);
+    });
+    return theme;
+}
 
 // export const getSessionInfoFromLocal = async () => {
     
@@ -71,3 +86,23 @@ export const rightSwipeDeleteAction = (progress, dragX, onPress) => {
         </RectButton>
     );
 }
+
+export const PersonSingleLink = (title, icon, onClick, theme, styles, rightIcon = 'chevron-right') => {
+    return (
+      <TouchableOpacity style={styles.linkWrapper} onPress={onClick}>
+        <Feather
+          name={icon}
+          size={25}
+          style={styles.icon}
+          color={theme.dark}
+        />
+        <Text style={{ ...styles.link, flexGrow: 1, color: theme.dark }}>{title}</Text>
+        <Feather
+          name={rightIcon}
+          size={20}
+          style={{ color: theme.grey }}
+          color={theme.grey}
+        />
+      </TouchableOpacity>
+    );
+  };
