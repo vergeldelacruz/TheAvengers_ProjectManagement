@@ -3,19 +3,23 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { lightColors } from '../../theme/colors';
 import { commonStyles } from '../../theme/styles';
 import { Feather } from '@expo/vector-icons'; 
+import { useSelector } from 'react-redux';
 
-const Search = ({searchString,onSearch}) => {
+const SearchInput = ({searchString,onSearch}) => {
+    const { theme } = useSelector((state) => state.commonReducer);
+
     return (
-        <View style={styles.inputWrapper}>
+        <View style={{...styles.inputWrapper, backgroundColor: theme.light}}>
             <TextInput 
-            placeholderTextColor={lightColors.grey}
-            placeholder='Enter name' style={styles.input} value={searchString} onChangeText={onSearch.bind(this)} />
+                placeholderTextColor={lightColors.grey}
+                placeholder='Search here...' 
+                style={{...styles.input, backgroundColor: theme.light, borderRadius: theme.borderRadius}} value={searchString} onChangeText={onSearch.bind(this)} />
             <Feather name="search" size={23} style={styles.icon} color={lightColors.grey} />
         </View>
     );
 }
 
-export default Search;
+export default SearchInput;
 
 const styles = StyleSheet.create({
     inputWrapper: {

@@ -48,6 +48,8 @@ function getAuthenticatedRoutes() {
     <Stack.Screen name="AddProject" component={Screens.AddProject} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
     <Stack.Screen name="Users" component={Screens.Users} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
     <Stack.Screen name="AddUser" component={Screens.AddUser} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
+    <Stack.Screen name="Tasks" component={Screens.Tasks} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
+    <Stack.Screen name="AddTask" component={Screens.AddTask} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
   </>
 }
 

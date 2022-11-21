@@ -17,10 +17,9 @@ router.post(
     check("description", "Please Enter a valid description").not().isEmpty(),
     check("status", "Please Enter a valid status").not().isEmpty(),
     check("startDate", "Please Enter a valid start Date")
-      .isDate()
       .not()
       .isEmpty(),
-    check("endDate", "Please Enter a valid end Date").isDate().not().isEmpty(),
+    check("endDate", "Please Enter a valid end Date").not().isEmpty(),
     check("assignedTo", "Please Enter an assigned To").not().isEmpty(),
     check("hourlyRate", "Please Enter a hourly rate")
       .isNumeric()
@@ -74,7 +73,11 @@ router.post(
       res.status(200).json(task);
     } catch (err) {
       console.log(err.message);
-      res.status(500).send("Error in Saving");
+      res.status(500).send({ 
+        error: {
+          message: e.message
+        }
+      });
     }
   }
 );
@@ -84,12 +87,16 @@ router.post(
  * @description - Get tasks
  * @param - /tasks
  */
-router.get("/tasks", auth, async (req, res) => {
+router.get("/tasks", async (req, res) => {
   try {
     const tasks = await Task.find({}).populate('assignedTo').populate('dependentTask');
     res.json(tasks);
   } catch (e) {
-    res.send({ message: "Error in Fetching tasks" });
+    res.send({ 
+      error: {
+        message: e.message
+      }
+     });
   }
 });
 
@@ -98,12 +105,16 @@ router.get("/tasks", auth, async (req, res) => {
  * @description - Get task
  * @param - /task/id
  */
-router.get("/task/:id", auth, async (req, res) => {
+router.get("/task/:id", async (req, res) => {
   try {
     const task = await Task.findById(req.params.id).populate('assignedTo').populate('dependentTask');
     res.json(task);
   } catch (e) {
-    res.send({ message: "Error in Fetching task" });
+    res.send({ 
+      error: {
+        message: e.message
+      }
+     });
   }
 });
 
@@ -112,14 +123,18 @@ router.get("/task/:id", auth, async (req, res) => {
  * @description - Delete task
  * @param - /task/id
  */
-router.delete("/task/:id", auth, async (req, res) => {
+router.delete("/task/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const task = await Task.findById(id);
     const results = await Task.deleteOne(task);
     res.json(results);
   } catch (e) {
-    res.send({ message: "Error in Deleting task" });
+    res.send({ 
+      error: {
+        message: e.message
+      }
+     });
   }
 });
 
@@ -128,7 +143,7 @@ router.delete("/task/:id", auth, async (req, res) => {
  * @description - Update task
  * @param - /task/id
  */
-router.put("/task/:id", auth, async (req, res) => {
+router.put("/task/:id", async (req, res) => {
   try {
     const id = req.params.id;
     let {
@@ -158,7 +173,11 @@ router.put("/task/:id", auth, async (req, res) => {
     );
     res.json(task);
   } catch (e) {
-    res.send({ message: "Error in Updating task" });
+    res.send({ 
+      error: {
+        message: e.message
+      }
+     });
   }
 });
 

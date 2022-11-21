@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import commonReducer from './common/commonReducers';
 import projectReducer from './admin/project/projectReducers';
 import userReducer from './admin/user/userReducers';
+import taskReducer from './admin/tasks/taskReducers';
 
 const rootReducer = combineReducers({ 
     commonReducer,
     projectReducer,
-    userReducer
+    userReducer,
+    taskReducer
 });
 
 export const Store = createStore(rootReducer, applyMiddleware(thunk));

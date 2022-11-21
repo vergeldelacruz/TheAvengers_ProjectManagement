@@ -17,7 +17,7 @@ export const getProjects = () => async dispatch => {
     }
 }
 
-export const getSingleCategory = (id) => async dispatch => {
+export const getSingleTask = (id) => async dispatch => {
     dispatch({ 
         type: GET_SINGLE_PROJECTS,
         payload: id

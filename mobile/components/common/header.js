@@ -3,14 +3,16 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { lightColors } from "../../theme/colors";
 import { commonStyles } from "../../theme/styles";
 import Constants from "expo-constants";
+import { useSelector } from "react-redux";
 
 const Header = ({ userFirstName , userImage}) => {
-  
+  const { theme } = useSelector((state) => state.commonReducer);
+
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.subTitle}>Welcome 👋🏻</Text>
-        <Text style={styles.title}>Hi, {userFirstName}</Text>
+        <Text style={{...styles.title, color: theme.dark}}>Hi, {userFirstName}</Text>
       </View>
       <View>
         {

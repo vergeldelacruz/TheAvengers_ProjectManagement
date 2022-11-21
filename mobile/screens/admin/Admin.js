@@ -19,6 +19,7 @@ const Admin = (props) => {
                 <Text style={{...commonStyles.mainHeading, marginTop: 10, color: theme.dark}}>Admin Panel</Text>
                 {PersonSingleLink("Projects", "briefcase", () => {props.navigation.navigate('Projects')}, theme, styles)}
                 {PersonSingleLink("Users", "users", () => {props.navigation.navigate('Users')}, theme, styles)}
+                {PersonSingleLink("Tasks", "clipboard", () => {props.navigation.navigate('Tasks')}, theme, styles)}
             </SafeAreaView>
             <StatusBar style="auto"></StatusBar>
         </View>

@@ -10,6 +10,8 @@ import Projects from "./admin/projects/Projects";
 import AddProject from "./admin/projects/AddProject";
 import Users from "./admin/users/Users";
 import AddUser from "./admin/users/AddUser";
+import Tasks from "./admin/tasks/Tasks";
+import AddTask from "./admin/tasks/AddTask";
 
 export const Screens = {
     Home,
@@ -23,5 +25,7 @@ export const Screens = {
     Projects,
     AddProject,
     Users,
-    AddUser
+    AddUser,
+    Tasks,
+    AddTask
 }
