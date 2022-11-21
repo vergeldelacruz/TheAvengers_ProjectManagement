@@ -21,6 +21,7 @@ router.post(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
+        status: false,
         errors: errors.array(),
       });
     }
@@ -62,7 +63,7 @@ router.post(
  * @description - Get projects
  * @param - /projects
  */
-router.get("/projects", auth, async (req, res) => {
+router.get("/projects", async (req, res) => {
   try {
     const projects = await Project.find({}).populate('members');
     res.json(projects);
@@ -90,14 +91,18 @@ router.get("/project/:id", auth, async (req, res) => {
  * @description - Delete project
  * @param - /project/id
  */
-router.delete("/project/:id", auth, async (req, res) => {
+router.delete("/project/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const project = await Project.findById(id);
     const results = await Project.deleteOne(project);
     res.json(results);
   } catch (e) {
-    res.send({ message: "Error in Deleting project" });
+    res.send({ 
+      error: {
+        message: e.message
+      }
+     });
   }
 });
 
@@ -106,7 +111,7 @@ router.delete("/project/:id", auth, async (req, res) => {
  * @description - Update project
  * @param - /project/id
  */
-router.put("/project/:id", auth, async (req, res) => {
+router.put("/project/:id", async (req, res) => {
   try {
     const id = req.params.id;
     let { name, description, status, hours, cost } = req.body;

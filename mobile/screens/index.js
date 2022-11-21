@@ -8,6 +8,8 @@ import Details from "./Details";
 import Admin from "./admin/Admin";
 import Projects from "./admin/projects/Projects";
 import AddProject from "./admin/projects/AddProject";
+import Users from "./admin/users/Users";
+import AddUser from "./admin/users/AddUser";
 
 export const Screens = {
     Home,
@@ -20,4 +22,6 @@ export const Screens = {
     Admin,
     Projects,
     AddProject,
+    Users,
+    AddUser
 }

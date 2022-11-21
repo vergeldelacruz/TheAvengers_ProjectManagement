@@ -2,31 +2,31 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { commonStyles } from '../../../theme/styles';
-import { getProjects, deleteProject } from '../../../store/admin/project/projectActions';
+import { getUsers, deleteUser } from '../../../store/admin/user/userActions';
 import { lightColors } from '../../../theme/colors';
 import { Feather } from '@expo/vector-icons'; 
 import BackButton from '../../../components/common/back-button';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { rightSwipeDeleteAction } from '../../../helpers/common';
 
-const Projects = (props) => {
+const Users = (props) => {
     const { theme } = useSelector((state) => state.commonReducer);
-    const { projects } = useSelector((state) => state.projectReducer);
+    const { users } = useSelector((state) => state.userReducer);
     const dispatch = useDispatch();
     const styles = getStyles(theme);
 
     useEffect(() => {
-        dispatch(getProjects());
+        dispatch(getUsers());
     }, []);
 
     const swipeRight = (progress, dragX, item) => {
         return rightSwipeDeleteAction(progress, dragX, () => {
             Alert.alert(
                 "Are you sure?",
-                "You want to delete this project?",
+                "You want to delete this user?",
                 [
                     { text: "Cancel", onPress: () => {} },
-                    { text: "OK", onPress: () => dispatch(deleteProject(item)) },
+                    { text: "OK", onPress: () => dispatch(deleteUser(item)) },
                 ],
             );
         })
@@ -37,15 +37,14 @@ const Projects = (props) => {
             (progress, dragX) => swipeRight(progress, dragX, item)
         }>
             <TouchableOpacity onPress={() => {
-                props.navigation.navigate("AddProject", { item, isEdit: true });
+                props.navigation.navigate("AddUser", { item, isEdit: true });
             }}>
                 <View style={styles.itemWrapper}>
                     <View>
-                        <Text style={styles.itemText}>{item.name}</Text>
-                        <Text style={{fontSize: 12, marginTop: 5, color: theme.darkGrey}} numberOfLines={3}>{item.description}</Text>
+                        <Text style={styles.itemText}>{item.firstName} {item.lastName}</Text>
+                        <Text style={{fontSize: 12, marginTop: 5, color: theme.darkGrey}}>{item.email}</Text>
                         <View style={styles.icons}>
-                            <View style={{...styles.subIcon, backgroundColor: theme.primary}}><Feather name={'dollar-sign'} size={15} color={'#fff'} /><Text style={styles.iconText}>{item.cost}</Text></View>
-                            <View style={styles.subIcon}><Feather name={'watch'} size={15} color={'#fff'} /><Text style={styles.iconText}>{item.hours}</Text></View>
+                            <View style={{...styles.subIcon, backgroundColor: item.role == 'Member' ? theme.secondary : theme.primary}}><Feather name={'user'} size={10} color={'#fff'} /><Text style={styles.iconText}>{item.role}</Text></View>
                         </View>
                     </View>
                     <Feather name="chevron-right" size={20} style={{color: lightColors.grey}} color={lightColors.dark} />
@@ -59,14 +58,14 @@ const Projects = (props) => {
             <SafeAreaView style={{...styles.mainContent, margin: 20}}>
                 <BackButton navigation={props.navigation}/>
                 <View style={{...styles.header}}>
-                    <Text style={{...commonStyles.mainHeading, marginTop: 10, color: theme.dark}}>Projects</Text>
-                    <TouchableOpacity onPress={() => {props.navigation.navigate('AddProject')}}>
+                    <Text style={{...commonStyles.mainHeading, marginTop: 10, color: theme.dark}}>Users</Text>
+                    <TouchableOpacity onPress={() => {props.navigation.navigate('AddUser')}}>
                         <Feather name="plus-circle" size={25} style={styles.icon} color={theme.dark} />
                     </TouchableOpacity>
                 </View>
                 <FlatList 
                     style={{flex: 1}}
-                    data={projects}
+                    data={users}
                     renderItem={({item}) => renderItem({item})}
                 />
             </SafeAreaView>
@@ -74,7 +73,7 @@ const Projects = (props) => {
     );
 }
 
-export default Projects;
+export default Users;
 
 const getStyles = (theme) => {
     return StyleSheet.create({
@@ -124,8 +123,8 @@ const getStyles = (theme) => {
         },
         iconText: {
             color: '#fff',
-            fontSize: 14,
-            marginLeft: 0,
+            fontSize: 10,
+            marginLeft: 3,
             fontFamily: commonStyles.fontMedium,
         },
     });

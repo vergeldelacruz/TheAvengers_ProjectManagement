@@ -4,14 +4,13 @@ import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, Touch
 import { commonStyles, formStyles } from '../../../theme/styles';
 import { lightColors } from '../../../theme/colors';
 import BackButton from '../../../components/common/back-button';
-import { addProject, updateProject } from '../../../store/admin/project/projectActions';
+import { addUser, updateUser } from '../../../store/admin/user/userActions';
 import DropDownPicker from "react-native-dropdown-picker";
 import { STATUS } from '../../../helpers/common';
 import { getUsers } from '../../../store/admin/user/userActions';
 
-const AddProject = (props) => {
+const AddUser = (props) => {
     const { theme } = useSelector((state) => state.commonReducer);
-    const { users } = useSelector((state) => state.userReducer);
     let [isEdit, setIsEdit] = useState(false);
     let [editingItem, setEditingItem] = useState(null);
     let [initialValues, setInitialValues] = useState({});
@@ -28,7 +27,7 @@ const AddProject = (props) => {
         let status = validateForm(initialValues);
         if (status.status && initialValues !== {}) {
             if(!isEdit) {
-                dispatch(addProject({
+                dispatch(addUser({
                     ...initialValues,
                     id: new Date().getTime(),
                 }));
@@ -36,7 +35,7 @@ const AddProject = (props) => {
                 props.navigation.goBack();
             }
             else{
-                dispatch(updateProject({
+                dispatch(updateUser({
                     ...initialValues,
                     id: editingItem.id,
                 }));
@@ -49,11 +48,7 @@ const AddProject = (props) => {
     }
 
     const validateForm = (values) => {
-        if (!values.name && values.name != "") return {message: "Please enter project name", status: false};
-        if (!values.description && values.description != "") return {message: "Please enter project description", status: false};
-        if (!values.status && values.status != "") return {message: "Please enter project status", status: false};
-        if (!values.hours && values.hours != "") return {message: "Please enter project hours", status: false};
-        if (!values.cost && values.cost != "") return {message: "Please enter project cost", status: false};
+        if (!values.firstName && values.firstName != "") return {message: "Please enter first name", status: false};
         else return {status: true};
     }
 
@@ -64,9 +59,6 @@ const AddProject = (props) => {
             setEditingItem(item);
             setInitialValues({
                 ...item,
-                cost: item.cost.toString(),
-                hours: item.hours.toString(),
-                members: item.members.map((item) => item._id),
             });
         }
     }, []);
@@ -136,25 +128,21 @@ const AddProject = (props) => {
                             marginTop: 10,
                             color: theme.dark,
                         }}
-                        >{isEdit ? `Edit Project`: `Add Project`}</Text>
+                        >{isEdit ? `Edit User`: `Add User`}</Text>
                     </View>
                     
                     {/* FORM STARTS */}
                     <View style={styles.form}>
 
-                        {getTextInput("name", "Ex. Nodejs Project", "default", "Project Name")}
-                        {getTextInput("description", "Ex. TODO", "default", "Project Description")}
-                        {getTextInput("hours", "Ex. 2", "numeric", "Project Hours")}
-                        {getTextInput("cost", "Ex. 250", "numeric", "Project Cost")}
-                        {getDropDown("status", "Select Status", [
-                            {label: "Pending", value: STATUS.PENDING},
-                            {label: "In Progress", value: STATUS.IN_PROGRESS},
-                            {label: "In Review", value: STATUS.IN_REVIEW},
-                            {label: "Completed", value: STATUS.COMPLETED},
-                        ], "Project Status", 0, false, "SIMPLE")}
-                        {getDropDown("members", "Select Members", users.map(
-                            (item) => ({label: `${item.firstName} ${item.lastName}`, value: item._id})
-                        ), "Members", 1, true, "BADGE")}
+                        {getTextInput("firstName", "Ex. John", "default", "First Name")}
+                        {getTextInput("lastName", "Ex. Doe", "default", "Last Name")}
+                        {!isEdit && getTextInput("email", "Ex. abc@test.com", "default", "Email")}
+                        {!isEdit && getTextInput("password", "Enter Password", "default", "Password")}
+                        {getTextInput("jobTitle", "Ex. Senior Developer", "default", "Job Title")}
+                        {getDropDown("role", "Select Role", [
+                            {label: "Administrator", value: "Administrator"},
+                            {label: "Member", value: "Member"},
+                        ], "Role", 0, false, "SIMPLE")}
 
                         <TouchableOpacity onPress={onFormSubmit} style={formStyles.submitButton}>
                             <Text style={formStyles.buttonText}>{isEdit ? `Update`: `Create`}</Text>
@@ -170,7 +158,7 @@ const AddProject = (props) => {
     );
 }
 
-export default AddProject;
+export default AddUser;
 
 const getStyles = (theme) => {
     return StyleSheet.create({

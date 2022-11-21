@@ -73,6 +73,7 @@ router.post(
           if (err) throw err;
           res.status(200).json({
             token,
+            user: user
           });
         }
       );
@@ -165,7 +166,7 @@ router.get("/me", auth, async (req, res) => {
  * @description - Get Users
  * @param - /users
  */
-router.get("/users", auth, async (req, res) => {
+router.get("/users", async (req, res) => {
   try {
     const users = await User.find({});
     res.json(users);
@@ -179,7 +180,7 @@ router.get("/users", auth, async (req, res) => {
  * @description - Get User
  * @param - /user/id
  */
-router.get("/user/:id", auth, async (req, res) => {
+router.get("/user/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     res.json(user);
@@ -193,14 +194,23 @@ router.get("/user/:id", auth, async (req, res) => {
  * @description - Delete User
  * @param - /user/id
  */
-router.delete("/user/:id", auth, async (req, res) => {
+router.delete("/user/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const user = await User.findById(id);
     const results = await User.deleteOne(user);
-    res.json(results);
+    res.json({
+      message: "User deleted successfully",
+      results: results,
+      status: true,
+    });
   } catch (e) {
-    res.send({ message: "Error in Deleting user" });
+    console.log(e.message)
+    res.send({ 
+      error: {
+        message: e.message
+      }
+    });
   }
 });
 
@@ -209,7 +219,7 @@ router.delete("/user/:id", auth, async (req, res) => {
  * @description - Update User
  * @param - /user/id
  */
-router.put("/user/:id", auth, async (req, res) => {
+router.put("/user/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const { firstName, lastName, jobTitle, role } = req.body;

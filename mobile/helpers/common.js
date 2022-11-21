@@ -105,4 +105,11 @@ export const PersonSingleLink = (title, icon, onClick, theme, styles, rightIcon 
         />
       </TouchableOpacity>
     );
-  };
+};
+
+export const STATUS = {
+    PENDING: 'pending',
+    IN_PROGRESS: 'in_progress',
+    IN_REVIEW: 'in_review',
+    COMPLETED: 'completed',
+}

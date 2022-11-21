@@ -33,7 +33,7 @@ export const setProjects = projects => dispatch => {
 
 export const addProject = project => async dispatch => {
     try {
-        const response = await fetch(`${API_URL}/projects`, {
+        const response = await fetch(`${API_URL}/project`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,10 +41,12 @@ export const addProject = project => async dispatch => {
             body: JSON.stringify(project),
         });
         const data = await response.json();
-        dispatch({
-            type: ADD_PROJECT,
-            payload: data,
-        });
+        if(!data.errors){
+            dispatch({
+                type: ADD_PROJECT,
+                payload: data,
+            });
+        }
     } catch (error) {
         console.log(error);
     }
@@ -52,17 +54,20 @@ export const addProject = project => async dispatch => {
 
 export const updateProject = project => async dispatch => {
     try {
-        const response = await fetch(`${API_URL}/projects/${project.id}`, {
+        const response = await fetch(`${API_URL}/project/${project._id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(project),
         });
-        dispatch({
-            type: UPDATE_PROJECT,
-            payload: project,
-        });
+        const data = await response.json();
+        if(!data.errors){
+            dispatch({
+                type: UPDATE_PROJECT,
+                payload: data,
+            });
+        }
     } catch (error) {
         console.log(error);
     }
@@ -70,7 +75,7 @@ export const updateProject = project => async dispatch => {
 
 export const deleteProject = project => async dispatch => {
     try {
-        const response = await fetch(`${API_URL}/projects/${project.id}`, {
+        const response = await fetch(`${API_URL}/projects/${project._id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
