@@ -7,13 +7,15 @@ This repository has two major components.
 
 # To run React Native App
 1. cd mobile
-2. npm run ios (for Mac)
-3. npm run android (for Wndows)
-4. to run the app create a command with your IP address and use that command => API_URL="http:// -- ENTER YOUR COMPUTER IP-- :3000" npx expo start
+2. npm install
+3. npm run ios (for Mac)
+4. npm run android (for Wndows)
+5. to run the app create a command with your IP address and use that command => API_URL="http:// -- ENTER YOUR COMPUTER IP-- :3000" npx expo start
 
 # To run REST API
 1. cd server
-2. npm start
+2. npm install
+3. npm start
 
 # To test REST API
 1. Download and install Postman.
