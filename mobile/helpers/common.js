@@ -113,3 +113,9 @@ export const STATUS = {
     IN_REVIEW: 'in_review',
     COMPLETED: 'completed',
 }
+export const STATUS_COLORS = {
+        [STATUS.PENDING]: lightColors.primary,
+        [STATUS.IN_PROGRESS]: lightColors.secondary,
+        [STATUS.IN_REVIEW]: lightColors.tertiary,
+        [STATUS.COMPLETED]: '#558B2F',
+}

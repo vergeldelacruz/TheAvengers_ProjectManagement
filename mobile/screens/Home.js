@@ -1,22 +1,63 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../components/common/header'
-import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { getProjects } from '../store/admin/project/projectActions';
+import { getTask } from '../store/admin/tasks/taskActions';
+import { getUsers } from '../store/admin/user/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { commonStyles } from '../theme/styles'
+import ProjectCard from '../components/home/ProjectCard';
+import TitleLink from '../components/common/title-link';
+import UserCard from '../components/home/UserCard';
+import TaskCard from '../components/common/task-card';
 
 export default function Home(props) {
   const { theme } = useSelector((state) => state.commonReducer);
+  const { projects } = useSelector((state) => state.projectReducer);
+  const { tasks } = useSelector((state) => state.taskReducer);
+  const { users } = useSelector((state) => state.userReducer);
+
   const dispatch = useDispatch();
   const styles = getStyles(theme);
+
+  useEffect(() => {
+    dispatch(getTask());
+    dispatch(getProjects());
+    dispatch(getUsers());
+  }, []);
 
   return (
     <View style={{backgroundColor: theme.background, flex: 1}}>
       <SafeAreaView>
-        <StatusBar barStyle={theme.barStyle}/>
-        <Header userFirstName={'Litson Thomas'}/>
-        <View style={{...commonStyles.mainContainer, backgroundColor: theme.background}}>
-            
-        </View>
+        <ScrollView>
+          <StatusBar barStyle={theme.barStyle}/>
+          <Header userFirstName={'Litson Thomas'}/>
+          <View style={{...commonStyles.mainContainer}}>
+            <FlatList 
+              data={projects}
+              renderItem={({item}) => <ProjectCard project={item}/>}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
+          <TitleLink title={'Users'}/>
+          <View style={{...commonStyles.mainContainer}}>
+            <FlatList 
+              data={users}
+              renderItem={({item}) => <UserCard user={item}/>}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
+          <TitleLink title={'Tasks'}/>
+          <View style={{...commonStyles.mainContainer}}>
+            {
+              tasks.map((task, index) => {
+                return <TaskCard key={index} task={task}/>
+              })
+            }
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </View>
   )

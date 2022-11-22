@@ -1,12 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { lightColors } from '../../theme/colors';
 import { commonStyles } from '../../theme/styles';
 
 const TitleLink = ({ navigation, title, url }) => {
+    const { theme } = useSelector((state) => state.commonReducer);
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={{...styles.title, color: theme.dark}}>{title}</Text>
             {/* <TouchableOpacity onPress={() => {navigation.navigate(url)}}>
                 <Text style={styles.viewAll}>View all</Text>
             </TouchableOpacity> */}
@@ -27,7 +30,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
     },
     title: {
-        fontSize: 15,
+        fontSize: 20,
         fontFamily: commonStyles.fontMedium,
         color: lightColors.dark,
     },

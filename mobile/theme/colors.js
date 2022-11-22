@@ -26,3 +26,5 @@ export const darkColors = {
     darkGrey: '#828282',
     borderRadius: 15,
 };
+
+export const projectColors = ['#FBC02D', '#E64A19', '#388E3C', '#3F51B5', '#3787eb', '#ff5a00', '#22293d'];

@@ -78,13 +78,15 @@ export const updateTask = task => async dispatch => {
 
 export const deleteTask = task => async dispatch => {
     try {
-        const response = await fetch(`${API_URL}/tasks/${task._id}`, {
+        const response = await fetch(`${API_URL}/task/${task._id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(task),
         });
+        const data = await response.json();
+        console.log(data);
         dispatch({
             type: DELETE_TASK,
             payload: task,

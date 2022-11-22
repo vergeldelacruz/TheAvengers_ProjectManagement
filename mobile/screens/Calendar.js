@@ -28,6 +28,10 @@ export default function Calendar(props) {
 
   useEffect(() => {
     getDaysList();
+  }, [tasks]);
+
+  useEffect(() => {
+    getDaysList();
     setSelectedDate(new Date(selectedYear, months.indexOf(selectedMonth), 1));
   }, [selectedMonth, selectedYear]);
 
@@ -85,7 +89,7 @@ export default function Calendar(props) {
         <View style={styles.itemRow}>
           {
             weekDays.map((item, index) => {
-              return <View key={index} style={styles.item}>
+              return <View key={`day-${index}`} style={styles.item}>
                 <Text style={{...styles.itemText, fontWeight: commonStyles.fontSemiBold}}>{item}</Text>
               </View>
             })
@@ -111,7 +115,7 @@ export default function Calendar(props) {
   const getWeekDaysItems = (i) => {
     return daysList[weekDays[i]]?.map((item, index) => {
       return <View style={{...styles.calendarDaySlots}}>
-        <TouchableOpacity style={item?.tasks.length > 0 ? {...styles.calendarDayItem, ...styles.calendarDayItemHasTasks} : {...styles.calendarDayItem, ...styles.item}}>
+        <TouchableOpacity key={`${weekDays[i]}${index}`} style={item?.tasks.length > 0 ? {...styles.calendarDayItem, ...styles.calendarDayItemHasTasks} : {...styles.calendarDayItem, ...styles.item}}>
           {item && item.tasks.length > 0 && <Text style={styles.calendarItemBadge}>{item?.tasks.length}</Text>}
           {!item && <Text style={styles.calendarDayItemText}></Text>}
           {item && item.date && <Text style={styles.calendarDayItemText}>{moment(item.date).date()}</Text>}
