@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { getRandColor } = require("../config/avatars");
 const ProjectSchema = mongoose.Schema({
   name: {
     type: String,
@@ -19,6 +20,11 @@ const ProjectSchema = mongoose.Schema({
   cost: {
     type: Number,
     required: true,
+  },
+  color: {
+    type: String,
+    required: false,
+    default: getRandColor(),
   },
   createdAt: {
     type: Date,

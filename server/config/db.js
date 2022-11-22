@@ -8,7 +8,7 @@ const InitiateMongoServer = async () => {
     });
     console.log("Connected to DB !!");
   } catch (e) {
-    console.log(e);
+    console.log(e.message);
     throw e;
   }
 };

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { getRandAvatar } = require("../config/avatars");
 const UserSchema = mongoose.Schema({
   email: {
     type: String,
@@ -23,6 +24,11 @@ const UserSchema = mongoose.Schema({
   role: {
     type: String,
     required: true,
+  },
+  avatar: {
+    type: String,
+    required: true,
+    default: getRandAvatar(),
   },
   createdAt: {
     type: Date,

@@ -3,6 +3,7 @@ require("dotenv").config({ path: "./config.env" });
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+var path = require("path");
 
 // Initiate Mongo Server
 const InitiateMongoServer = require("./config/db");
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
 

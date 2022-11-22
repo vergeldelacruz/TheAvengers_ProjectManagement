@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const auth = require("../middleware/auth");
-
+const { getRandAvatar } = require("../config/avatars");
 /**
  * @method - POST
  * @param - /signup
@@ -43,13 +43,15 @@ router.post(
         });
       }
 
+      let avatar = getRandAvatar();
       user = new User({
         email,
         password,
         firstName,
         lastName,
         jobTitle,
-        role
+        role,
+        avatar
       });
 
       const salt = await bcrypt.genSalt(10);
