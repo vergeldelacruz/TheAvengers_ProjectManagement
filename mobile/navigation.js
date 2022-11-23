@@ -102,7 +102,14 @@ function getAuthenticatedRoutes() {
         name="SearchSortModal"
         component={Screens.SearchSort}
         listeners={{ focus: () => LightHaptics() }}
-        options={{ ...navigationOptions, presentation: "fullScreenModal" }}
+        options={{ ...navigationOptions }}
+      />
+
+      <Stack.Screen
+        name="MyProfile"
+        component={Screens.MyProfile}
+        listeners={{ focus: () => LightHaptics() }}
+        options={{ ...navigationOptions}}
       />
     </>
   );
