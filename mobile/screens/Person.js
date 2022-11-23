@@ -13,12 +13,18 @@ export default function Person(props) {
   const styles = getStyles(theme);
 
   return (
-    <View style={{backgroundColor: theme.background, flex: 1}}>
+    <View style={{
+      ...commonStyles.mainContainer,
+      flex: 1,
+      backgroundColor: theme.background,
+    }}>
       <SafeAreaView>
         <StatusBar barStyle={theme.barStyle}/>
-        <View style={{...commonStyles.mainContainer, backgroundColor: theme.background}}>
+        <View>
             <Text style={{...commonStyles.mainHeading, color: theme.dark}}>Hi! Litson</Text>
-            {PersonSingleLink('My Profile', 'user', () => {}, theme, styles)}
+            {PersonSingleLink('My Profile', 'user', () => {
+              props.navigation.navigate('MyProfile');
+            }, theme, styles)}
             {PersonSingleLink('My Projects', 'briefcase', () => {}, theme, styles)}
             {PersonSingleLink('Admin Panel', 'database', () => {
               props.navigation.navigate('Admin');

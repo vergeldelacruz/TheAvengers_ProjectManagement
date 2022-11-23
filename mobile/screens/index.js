@@ -13,6 +13,7 @@ import AddUser from "./admin/users/AddUser";
 import Tasks from "./admin/tasks/Tasks";
 import AddTask from "./admin/tasks/AddTask";
 import SearchSort from "./SearchSort";
+import MyProfile from "./MyProfile";
 
 export const Screens = {
     Home,
@@ -29,5 +30,6 @@ export const Screens = {
     AddUser,
     Tasks,
     AddTask,
-    SearchSort
+    SearchSort,
+    MyProfile
 }
