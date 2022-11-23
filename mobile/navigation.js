@@ -28,41 +28,106 @@ export const AppNavigation = () => {
     });
   }, []);
 
-  return <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Group screenOptions={{}}>
-        { user && getAuthenticatedRoutes() }
-        { !user && getAuthenticatedRoutes() }
-      </Stack.Group>
-    </Stack.Navigator>
-  </NavigationContainer>
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Group screenOptions={{}}>
+          {user && getAuthenticatedRoutes()}
+          {!user && getAuthenticatedRoutes()}
+        </Stack.Group>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 // Authenticated Routes
 function getAuthenticatedRoutes() {
-  return <>
-    <Stack.Screen name="TabNavigator" component={TabNavigator} options={navigationOptions}/>
-    <Stack.Screen name="Details" component={Screens.Details} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
-    <Stack.Screen name="Admin" component={Screens.Admin} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
-    <Stack.Screen name="Projects" component={Screens.Projects} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
-    <Stack.Screen name="AddProject" component={Screens.AddProject} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
-    <Stack.Screen name="Users" component={Screens.Users} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
-    <Stack.Screen name="AddUser" component={Screens.AddUser} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
-    <Stack.Screen name="Tasks" component={Screens.Tasks} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
-    <Stack.Screen name="AddTask" component={Screens.AddTask} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
-  </>
+  return (
+    <>
+      <Stack.Screen
+        name="TabNavigator"
+        component={TabNavigator}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="Details"
+        component={Screens.Details}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="Admin"
+        component={Screens.Admin}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="Projects"
+        component={Screens.Projects}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="AddProject"
+        component={Screens.AddProject}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="Users"
+        component={Screens.Users}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="AddUser"
+        component={Screens.AddUser}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="Tasks"
+        component={Screens.Tasks}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="AddTask"
+        component={Screens.AddTask}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
+
+      <Stack.Screen
+        name="SearchSortModal"
+        component={Screens.SearchSort}
+        listeners={{ focus: () => LightHaptics() }}
+        options={{ ...navigationOptions, presentation: "fullScreenModal" }}
+      />
+    </>
+  );
 }
 
 function getUnauthenticatedRoutes() {
-  return <>
-    <Stack.Screen name="Login" component={Screens.Login} options={navigationOptions}/>
-    <Stack.Screen name="Register" component={Screens.Register} listeners={{ focus: () => LightHaptics() }} options={navigationOptions}/>
-  </>
+  return (
+    <>
+      <Stack.Screen
+        name="Login"
+        component={Screens.Login}
+        options={navigationOptions}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Screens.Register}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
+    </>
+  );
 }
 
 // Tabs navigator component
 function TabNavigator() {
-
   const { theme } = useSelector((state) => state.commonReducer);
 
   return (
