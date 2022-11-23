@@ -108,6 +108,7 @@ export const PersonSingleLink = (title, icon, onClick, theme, styles, rightIcon 
 };
 
 export const STATUS = {
+    ALL: 'all',
     PENDING: 'pending',
     IN_PROGRESS: 'in_progress',
     IN_REVIEW: 'in_review',
@@ -118,4 +119,12 @@ export const STATUS_COLORS = {
         [STATUS.IN_PROGRESS]: lightColors.secondary,
         [STATUS.IN_REVIEW]: lightColors.tertiary,
         [STATUS.COMPLETED]: '#558B2F',
+        [STATUS.ALL]: lightColors.dark,
+
+}
+export const SORT = {
+    TITLE_ASC: 'Title-Ascending',
+    TITLE_DESC: 'Title-Descending',
+    COST_LOW_HIGH: 'Cost-Low-High',
+    COST_HIGH_LOW: 'Cost-High-Low',
 }
