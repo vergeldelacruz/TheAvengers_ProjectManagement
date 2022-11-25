@@ -65,7 +65,7 @@ router.post(
  */
 router.get("/projects", async (req, res) => {
   try {
-    const projects = await Project.find({}).populate('members');
+    const projects = await Project.find({});
     res.json(projects);
   } catch (e) {
     res.send({ message: "Error in Fetching projects" });
@@ -79,7 +79,7 @@ router.get("/projects", async (req, res) => {
  */
 router.get("/project/:id", auth, async (req, res) => {
   try {
-    const project = await Project.findById(req.params.id).populate('members');
+    const project = await Project.findById(req.params.id);
     res.json(project);
   } catch (e) {
     res.send({ message: "Error in Fetching project" });

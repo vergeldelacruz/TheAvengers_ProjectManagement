@@ -17,7 +17,7 @@ import CategoryList from "../components/search/CategoryList";
 import { STATUS, SORT } from "../helpers/common";
 import { lightColors } from "../theme/colors";
 import { MaterialIcons } from "@expo/vector-icons";
-import { getProjects } from '../store/admin/project/projectActions';
+import { getProjects } from "../store/admin/project/projectActions";
 
 export default function Search({ navigation, route, props }) {
   const { theme } = useSelector((state) => state.commonReducer);
@@ -53,7 +53,6 @@ export default function Search({ navigation, route, props }) {
     });
   };
 
-  
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -66,25 +65,11 @@ export default function Search({ navigation, route, props }) {
     }
   }, [route.params?.sortBy]);
 
-
-  // useEffect(() => {
-  //   console.log("change in projects");
-  //   //setData(projects);
-  //   dispatch(getProjects());
-  // }, [projects]);
-
   useEffect(() => {
-    console.log("search");
-    // projects.map((project) => console.log(project.members));
-    // //! TODO: set to user id from session
-    // const userId = "6377b4fb35226ee4c6805a35";
-    // let searchedProjects = projects.filter( (a) =>
-    //    a.members.map((a) => a._id).includes(userId)
-    // );
-    // console.log("After filter");
-    // searchedProjects.map((project) => console.log(project.name));
-
-    let searchedProjects = projects.filter(
+    //! TODO: set to user id from session
+    const userId = "6377b4fb35226ee4c6805a35";
+    let searchedProjects = projects.filter((a) => a.members.includes(userId));
+    searchedProjects = searchedProjects.filter(
       (a) =>
         a.name.toLowerCase().includes(searchString.toLowerCase()) ||
         a.description.toLowerCase().includes(searchString.toLowerCase())
@@ -96,22 +81,22 @@ export default function Search({ navigation, route, props }) {
     }
     let currentSortBy = sortBy.filter((a) => a.isChecked === true);
     if (currentSortBy[0].id === SORT.TITLE_ASC) {
-      console.log("Sort by Title Ascending");
+      //console.log("Sort by Title Ascending");
       searchedProjects = searchedProjects.sort(function (a, b) {
         return a.name.localeCompare(b.name);
       });
     } else if (currentSortBy[0].id === SORT.TITLE_DESC) {
-      console.log("Sort by Title Descending");
+      //console.log("Sort by Title Descending");
       searchedProjects = searchedProjects.sort(function (a, b) {
         return b.name.localeCompare(a.name);
       });
     } else if (currentSortBy[0].id === SORT.COST_LOW_HIGH) {
-      console.log("Sort by Cost Low to High");
+      ///console.log("Sort by Cost Low to High");
       searchedProjects = searchedProjects.sort(function (a, b) {
         return a.cost - b.cost;
       });
     } else if (currentSortBy[0].id === SORT.COST_HIGH_LOW) {
-      console.log("Sort by Cost High to Low");
+      //console.log("Sort by Cost High to Low");
       searchedProjects = searchedProjects.sort(function (a, b) {
         return b.cost - a.cost;
       });
