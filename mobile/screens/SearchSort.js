@@ -114,7 +114,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
+    fontFamily: commonStyles.fontRegular,
     textAlign: "center",
   },
   buttonWrapper: {

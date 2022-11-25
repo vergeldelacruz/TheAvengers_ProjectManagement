@@ -20,7 +20,7 @@ const CategoryList = ({ data, selectedCategoryId, onSelectedCategory }) => {
             style={[
               styles.category,
               selectedCategoryId == item.id
-                ? { backgroundColor: STATUS_COLORS[item.id] }
+                ? { backgroundColor: lightColors.primary }
                 : { backgroundColor: lightColors.light },
             ]}
             onPress={onSelectedCategory.bind(this, item)}

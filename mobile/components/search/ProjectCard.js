@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { Feather } from "react-native-vector-icons";
 import moment from "moment";
 import { STATUS_COLORS } from "../../helpers/common";
+import { lightColors } from "../../theme/colors";
+import { commonStyles } from '../../theme/styles';
 
 export default function ProjectCard({ project }) {
   const { theme } = useSelector((state) => state.commonReducer);
@@ -28,7 +30,7 @@ export default function ProjectCard({ project }) {
     <View
       style={{
         ...styles.cardWrapper,
-        backgroundColor: STATUS_COLORS[project.status],
+        backgroundColor: project.color,
       }}
     >
       <Text numberOfLines={2} style={styles.heading}>
@@ -46,10 +48,19 @@ export default function ProjectCard({ project }) {
       <View style={styles.progressWrapper}>
         <View style={{ ...styles.progressBar, width: `${progress}%` }}></View>
       </View>
+      <View style={styles.icons}>
+        <View
+          style={{
+            ...styles.subIcon,
+            backgroundColor: STATUS_COLORS[project.status],
+          }}
+        >
+          <Feather name={"bookmark"} size={15} color={"#fff"} />
+          <Text style={styles.iconText}>{project.status}</Text>
+        </View>
+      </View>
       <View style={styles.costWrapper}>
-        <Text style={styles.cost}>
-          $ {project.cost}
-        </Text>
+        <Text style={styles.cost}>$ {project.cost}</Text>
       </View>
     </View>
   );
@@ -106,10 +117,35 @@ const getStyles = (theme) => {
       alignItems: "flex-end",
       marginTop: 10,
     },
-    cost: { 
-      flex:1,color: "#fff",
+    cost: {
+      flex: 1,
+      color: "#fff",
       fontSize: 20,
-      textAlign:"right" 
-    }
+      textAlign: "right",
+    },
+    icons: {
+      display: "flex",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      flexDirection: "row",
+    },
+    subIcon: {
+      display: "flex",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      flexDirection: "row",
+      marginTop: 10,
+      marginRight: 10,
+      padding: 3,
+      paddingHorizontal: 10,
+      backgroundColor: theme.secondary,
+      borderRadius: lightColors.borderRadius,
+    },
+    iconText: {
+      color: "#fff",
+      fontSize: 10,
+      marginLeft: 3,
+      fontFamily: commonStyles.fontMedium,
+    },
   });
 };
