@@ -16,7 +16,8 @@ import SearchHint from "../components/search/SearchHint";
 import CategoryList from "../components/search/CategoryList";
 import { STATUS, SORT } from "../helpers/common";
 import { lightColors } from "../theme/colors";
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialIcons } from "@expo/vector-icons";
+import { getProjects } from '../store/admin/project/projectActions';
 
 export default function Search({ navigation, route, props }) {
   const { theme } = useSelector((state) => state.commonReducer);
@@ -52,19 +53,37 @@ export default function Search({ navigation, route, props }) {
     });
   };
 
-  useEffect(() => {
-    setData(projects);
-  }, [projects]);
+  
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getProjects());
+  // }, []);
 
   useEffect(() => {
     if (route.params?.sortBy) {
       setSortBy(route.params?.sortBy);
-    }   
-  }, [
-    route.params?.sortBy
-  ]);
+    }
+  }, [route.params?.sortBy]);
+
+
+  // useEffect(() => {
+  //   console.log("change in projects");
+  //   //setData(projects);
+  //   dispatch(getProjects());
+  // }, [projects]);
 
   useEffect(() => {
+    console.log("search");
+    // projects.map((project) => console.log(project.members));
+    // //! TODO: set to user id from session
+    // const userId = "6377b4fb35226ee4c6805a35";
+    // let searchedProjects = projects.filter( (a) =>
+    //    a.members.map((a) => a._id).includes(userId)
+    // );
+    // console.log("After filter");
+    // searchedProjects.map((project) => console.log(project.name));
+
     let searchedProjects = projects.filter(
       (a) =>
         a.name.toLowerCase().includes(searchString.toLowerCase()) ||
@@ -81,27 +100,24 @@ export default function Search({ navigation, route, props }) {
       searchedProjects = searchedProjects.sort(function (a, b) {
         return a.name.localeCompare(b.name);
       });
-    } else 
-    if (currentSortBy[0].id === SORT.TITLE_DESC) {
+    } else if (currentSortBy[0].id === SORT.TITLE_DESC) {
       console.log("Sort by Title Descending");
       searchedProjects = searchedProjects.sort(function (a, b) {
         return b.name.localeCompare(a.name);
       });
-    } else 
-    if (currentSortBy[0].id === SORT.COST_LOW_HIGH) {
+    } else if (currentSortBy[0].id === SORT.COST_LOW_HIGH) {
       console.log("Sort by Cost Low to High");
       searchedProjects = searchedProjects.sort(function (a, b) {
         return a.cost - b.cost;
       });
-    } else 
-    if (currentSortBy[0].id === SORT.COST_HIGH_LOW) {
+    } else if (currentSortBy[0].id === SORT.COST_HIGH_LOW) {
       console.log("Sort by Cost High to Low");
       searchedProjects = searchedProjects.sort(function (a, b) {
         return b.cost - a.cost;
       });
     }
     setData([...searchedProjects]);
-  }, [searchString, selectedCategoryId, sortBy]);
+  }, [projects, searchString, selectedCategoryId, sortBy]);
 
   function header() {
     return (
@@ -133,7 +149,7 @@ export default function Search({ navigation, route, props }) {
           justifyContent: "center",
         }}
       >
-        <Text>No Data Found</Text>
+        <Text style={styles.emptyListText}>No Data Found</Text>
       </View>
     );
   };
@@ -144,6 +160,7 @@ export default function Search({ navigation, route, props }) {
         <StatusBar barStyle={theme.barStyle} />
         <View style={{ flex: 1, marginHorizontal: 20 }}>
           <FlatList
+            contentContainerStyle={{ flexGrow: 1 }}
             ListEmptyComponent={emptyList}
             ListHeaderComponent={header()}
             stickyHeaderHiddenOnScroll={true}
@@ -226,6 +243,11 @@ const getStyles = (theme) => {
     fabIcon: {
       fontSize: 30,
       color: "white",
+    },
+    emptyListText: {
+      textAlign: "center",
+      fontSize: 16,
+      fontFamily: commonStyles.fontRegular,
     },
   });
 };

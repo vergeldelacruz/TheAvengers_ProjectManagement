@@ -114,7 +114,7 @@ router.delete("/project/:id", async (req, res) => {
 router.put("/project/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    let { name, description, status, hours, cost } = req.body;
+    let { name, description, status, hours, cost, members } = req.body;
     hours = hours || 0;
     cost = cost || 0;
     const project = await Project.findByIdAndUpdate(
@@ -125,6 +125,7 @@ router.put("/project/:id", async (req, res) => {
         status,
         hours,
         cost,
+        members
       },
       { new: true }
     );
