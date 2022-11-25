@@ -66,7 +66,7 @@ const AddProject = (props) => {
                 ...item,
                 cost: item.cost.toString(),
                 hours: item.hours.toString(),
-                members: item.members.map((item) => item._id),
+                members: item.members.map((item) => item),
             });
         }
     }, []);
