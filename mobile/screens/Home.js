@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/common/header'
 import { FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import { getProjects } from '../store/admin/project/projectActions';
@@ -17,6 +17,9 @@ export default function Home(props) {
   const { tasks } = useSelector((state) => state.taskReducer);
   const { users } = useSelector((state) => state.userReducer);
 
+  const [userProjects, setUserProjects ] = useState([]);
+  const [userTasks, setUserTasks ] = useState([]);
+
   const dispatch = useDispatch();
   const styles = getStyles(theme);
 
@@ -24,6 +27,12 @@ export default function Home(props) {
     dispatch(getTask());
     dispatch(getProjects());
     dispatch(getUsers());
+
+     //! TODO: set to user id from session
+     const userId = "6377b4fb35226ee4c6805a35";
+     setUserProjects(projects.filter((a) => a.members.includes(userId)));
+     setUserTasks(tasks.filter((a) => a.assignedTo._id === userId));
+
   }, []);
 
   return (
@@ -34,7 +43,7 @@ export default function Home(props) {
           <Header userFirstName={'Litson Thomas'}/>
           <View style={{...commonStyles.mainContainer}}>
             <FlatList 
-              data={projects}
+              data={userProjects}
               renderItem={({item}) => <ProjectCard project={item}/>}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
@@ -52,7 +61,7 @@ export default function Home(props) {
           <TitleLink title={'Tasks'}/>
           <View style={{...commonStyles.mainContainer}}>
             {
-              tasks.map((task, index) => {
+              userTasks.map((task, index) => {
                 return <TaskCard key={index} task={task}/>
               })
             }

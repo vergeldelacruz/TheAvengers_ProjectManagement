@@ -154,7 +154,7 @@ export default function Search({ navigation, route, props }) {
             horizontal={false}
             numColumns={2}
             data={data}
-            renderItem={({ item }) => <ProjectCard project={item} />}
+            renderItem={({ item }) => <ProjectCard project={item} navigation={navigation} />}
             columnWrapperStyle={{ justifyContent: "space-between" }}
             keyExtractor={(item) => item._id.toString()}
           />
