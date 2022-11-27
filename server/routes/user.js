@@ -110,13 +110,13 @@ router.post(
       });
       if (!user)
         return res.status(400).json({
-          message: "User Not Exist",
+          errors: [{ msg: "User Not Exist" }]
         });
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
         return res.status(400).json({
-          message: "Incorrect Password !",
+          errors: [{ msg: "Incorrect Password !" }]
         });
 
       const payload = {
@@ -135,13 +135,14 @@ router.post(
           if (err) throw err;
           res.status(200).json({
             token,
+            user,
           });
         }
       );
     } catch (e) {
       console.error(e);
       res.status(500).json({
-        message: "Server Error",
+        errors: [{ msg: "Server Error" }]
       });
     }
   }
@@ -159,7 +160,9 @@ router.get("/me", auth, async (req, res) => {
     const user = await User.findById(req.user.id);
     res.json(user);
   } catch (e) {
-    res.send({ message: "Error in Fetching user" });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Fetching logged in user" }]
+    });
   }
 });
 
@@ -173,7 +176,9 @@ router.get("/users", async (req, res) => {
     const users = await User.find({});
     res.json(users);
   } catch (e) {
-    res.send({ message: "Error in Fetching users" });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Fetching users" }]
+    });
   }
 });
 
@@ -187,7 +192,9 @@ router.get("/user/:id", async (req, res) => {
     const user = await User.findById(req.params.id);
     res.json(user);
   } catch (e) {
-    res.send({ message: "Error in Fetching user" });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Fetching user" }]
+    });
   }
 });
 
@@ -207,11 +214,8 @@ router.delete("/user/:id", async (req, res) => {
       status: true,
     });
   } catch (e) {
-    console.log(e.message)
-    res.send({ 
-      error: {
-        message: e.message
-      }
+    return res.status(500).json({
+      errors: [{ msg: "Error in Deleting user" }]
     });
   }
 });
@@ -237,7 +241,9 @@ router.put("/user/:id", async (req, res) => {
     );
     res.json(user);
   } catch (e) {
-    res.send({ message: "Error in Updating user" });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Updating user" }]
+    });
   }
 });
 module.exports = router;

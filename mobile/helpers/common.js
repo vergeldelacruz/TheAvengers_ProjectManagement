@@ -39,22 +39,29 @@ export const getTheme = async () => {
     return theme;
 }
 
-// export const getSessionInfoFromLocal = async () => {
+export const getSessionInfoFromLocal = async () => {
     
-//     let session = await LocalStorage.load({
-//         key: SESSION_STORAGE_KEY,
-//     }).catch((err) => {
-//         console.log(err.message);
-//     });
+    let session = await LocalStorage.load({
+        key: SESSION_STORAGE_KEY,
+    }).catch((err) => {
+        console.log(err.message);
+    });
 
-//     return session;
-// }
+    return session;
+}
 
-// export const removeSessionInfoFromLocal = async () => {
-//     return await LocalStorage.remove({
-//         key: SESSION_STORAGE_KEY,
-//     });
-// }
+export const removeSessionInfoFromLocal = async () => {
+    return await LocalStorage.remove({
+        key: SESSION_STORAGE_KEY,
+    });
+}
+
+export const setSessionInfoInLocal = async (user) => {
+    LocalStorage.save({
+        key: SESSION_STORAGE_KEY,
+        data: user,
+    });
+}
 
 const styles = {
     deleteButton: {

@@ -1,35 +1,52 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { Feather } from 'react-native-vector-icons';
-import moment from 'moment';
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Feather } from "react-native-vector-icons";
+import moment from "moment";
 
-export default function ProjectCard({ project }) {
+export default function ProjectCard({ project, navigation }) {
   const { theme } = useSelector((state) => state.commonReducer);
   const { tasks } = useSelector((state) => state.taskReducer);
+  const { users } = useSelector((state) => state.userReducer);
+  const [members, setMembers] = useState([]);
   const styles = getStyles(theme);
-
   let [progress, setProgress] = useState(0);
 
   useEffect(() => {
     let projectTasks = tasks.filter((task) => task.projectId === project._id);
-    let completedTasks = projectTasks.filter((task) => task.status.toLowerCase() == "completed");
-    let progress = completedTasks.length > 0 ? Math.round((completedTasks.length / projectTasks.length) * 100) : 0;
+    let completedTasks = projectTasks.filter(
+      (task) => task.status.toLowerCase() == "completed"
+    );
+    let progress =
+      completedTasks.length > 0
+        ? Math.round((completedTasks.length / projectTasks.length) * 100)
+        : 0;
     setProgress(progress);
-  }, []);
+    setMembers(users.filter((a) => project.members.includes(a._id)));
+  }, [tasks,users]);
 
   return (
-    <View style={{...styles.cardWrapper, backgroundColor: project.color}}>
-      <Text numberOfLines={2} style={styles.heading}>{project.name}</Text>
-      <View style={styles.calendar}>
-        <Feather name={'calendar'} size={15} color={'#fff'}/>
-        <Text style={{color: '#fff', marginLeft: 5}}>{moment(project.createdAt).format('DD MMM, YYYY')}</Text>
-      </View>
-      <View style={styles.progressWrapper}>
-        <View style={{...styles.progressBar, width: `${progress}%`}}></View>
-      </View>
+    <View style={{ ...styles.cardWrapper, backgroundColor: project.color }}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Details", { project, members, tasks });
+        }}
+      >
+        <Text numberOfLines={2} style={styles.heading}>
+          {project.name}
+        </Text>
+        <View style={styles.calendar}>
+          <Feather name={"calendar"} size={15} color={"#fff"} />
+          <Text style={{ color: "#fff", marginLeft: 5 }}>
+            {moment(project.createdAt).format("DD MMM, YYYY")}
+          </Text>
+        </View>
+        <View style={styles.progressWrapper}>
+          <View style={{ ...styles.progressBar, width: `${progress}%` }}></View>
+        </View>
+      </TouchableOpacity>
     </View>
-  )
+  );
 }
 
 const getStyles = (theme) => {
@@ -70,5 +87,5 @@ const getStyles = (theme) => {
       top: 0,
       width: "50%",
     },
-  })
-}
+  });
+};

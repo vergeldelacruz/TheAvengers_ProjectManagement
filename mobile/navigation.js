@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { getTheme, LightHaptics } from "./helpers/common";
+import { getTheme, LightHaptics, getSessionInfoFromLocal,removeSessionInfoFromLocal, setSessionInfoInLocal } from "./helpers/common";
 import { Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,7 +19,9 @@ const Tab = createBottomTabNavigator();
 
 export const AppNavigation = () => {
   const { theme } = useSelector((state) => state.commonReducer);
-  let [user, setUser] = useState(null);
+  const { auth } = useSelector((state) => state.authReducer);
+
+  const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,13 +30,35 @@ export const AppNavigation = () => {
     });
   }, []);
 
+  useEffect(() => {
+    //console.log(auth);
+    if(auth) {
+      setUser(auth.user);
+      setSessionInfoInLocal(auth);
+    } else {
+      removeSessionInfoFromLocal();
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      let auth = await getSessionInfoFromLocal();
+      //console.log("auth", auth);
+      if (auth) {
+        setUser(auth.user);
+        console.log("setting user");
+      }
+    }
+    checkSession();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Group screenOptions={{}}>
-          {getUnauthenticatedRoutes()}
-          {/* {user && getAuthenticatedRoutes()}
-          {!user && getAuthenticatedRoutes()} */}
+          {/* {getUnauthenticatedRoutes()} */}
+          {user && getAuthenticatedRoutes()}
+          {!user && getUnauthenticatedRoutes()}
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

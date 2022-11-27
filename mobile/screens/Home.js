@@ -1,75 +1,81 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../components/common/header'
-import { FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
-import { getProjects } from '../store/admin/project/projectActions';
-import { getTask } from '../store/admin/tasks/taskActions';
-import { getUsers } from '../store/admin/user/userActions';
-import { useDispatch, useSelector } from 'react-redux';
-import { commonStyles } from '../theme/styles'
-import ProjectCard from '../components/home/ProjectCard';
-import TitleLink from '../components/common/title-link';
-import UserCard from '../components/home/UserCard';
-import TaskCard from '../components/common/task-card';
+import React, { useEffect, useState } from "react";
+import Header from "../components/common/header";
+import {
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { getProjects } from "../store/admin/project/projectActions";
+import { getTask } from "../store/admin/tasks/taskActions";
+import { getUsers } from "../store/admin/user/userActions";
+import { useDispatch, useSelector } from "react-redux";
+import { commonStyles } from "../theme/styles";
+import ProjectCard from "../components/home/ProjectCard";
+import TitleLink from "../components/common/title-link";
+import UserCard from "../components/home/UserCard";
+import TaskCard from "../components/common/task-card";
 
 export default function Home(props) {
   const { theme } = useSelector((state) => state.commonReducer);
   const { projects } = useSelector((state) => state.projectReducer);
   const { tasks } = useSelector((state) => state.taskReducer);
   const { users } = useSelector((state) => state.userReducer);
+  const { auth } = useSelector((state) => state.authReducer);
 
-  const [userProjects, setUserProjects ] = useState([]);
-  const [userTasks, setUserTasks ] = useState([]);
+  const [userProjects, setUserProjects] = useState([]);
+  const [userTasks, setUserTasks] = useState([]);
 
   const dispatch = useDispatch();
   const styles = getStyles(theme);
 
-  useEffect(() => {
+  useEffect(() => {   
     dispatch(getTask());
     dispatch(getProjects());
     dispatch(getUsers());
-
-     //! TODO: set to user id from session
-     const userId = "6377b4fb35226ee4c6805a35";
-     setUserProjects(projects.filter((a) => a.members.includes(userId)));
-     setUserTasks(tasks.filter((a) => a.assignedTo._id === userId));
-
   }, []);
 
+  useEffect(() => {
+    setUserProjects(projects.filter((a) => a.members.includes(auth?.user._id)));
+    setUserTasks(tasks.filter((a) => a.assignedTo._id === auth?.user._id));
+  }, [projects,tasks,auth]);
+
   return (
-    <View style={{backgroundColor: theme.background, flex: 1}}>
+    <View style={{ backgroundColor: theme.background, flex: 1 }}>
       <SafeAreaView>
         <ScrollView>
-          <StatusBar barStyle={theme.barStyle}/>
-          <Header userFirstName={'Litson Thomas'}/>
-          <View style={{...commonStyles.mainContainer}}>
-            <FlatList 
+          <StatusBar barStyle={theme.barStyle} />
+          <Header userFirstName={auth?.user.firstName} />
+          <View style={{ ...commonStyles.mainContainer }}>
+            <FlatList
               data={userProjects}
-              renderItem={({item}) => <ProjectCard project={item}/>}
+              renderItem={({ item }) => <ProjectCard project={item} navigation={props.navigation} />}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             />
           </View>
-          <TitleLink title={'Users'}/>
-          <View style={{...commonStyles.mainContainer}}>
-            <FlatList 
+          <TitleLink title={"Users"} />
+          <View style={{ ...commonStyles.mainContainer }}>
+            <FlatList
               data={users}
-              renderItem={({item}) => <UserCard user={item}/>}
+              renderItem={({ item }) => <UserCard user={item} />}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             />
           </View>
-          <TitleLink title={'Tasks'}/>
-          <View style={{...commonStyles.mainContainer}}>
-            {
-              userTasks.map((task, index) => {
-                return <TaskCard key={index} task={task}/>
-              })
-            }
+          <TitleLink title={"Tasks"} />
+          <View style={{ ...commonStyles.mainContainer }}>
+            {userTasks.map((task, index) => {
+              return <TaskCard key={index} task={task} />;
+            })}
           </View>
         </ScrollView>
       </SafeAreaView>
     </View>
-  )
+  );
 }
 
 const getStyles = (theme) => {
@@ -117,4 +123,4 @@ const getStyles = (theme) => {
       fontFamily: commonStyles.fontMedium,
     },
   });
-}
+};

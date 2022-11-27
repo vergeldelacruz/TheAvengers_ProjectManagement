@@ -52,7 +52,7 @@ router.post(
       });
       if (task) {
         return res.status(400).json({
-          msg: "Task Already Exists",
+          errors: [{ msg: "Task Already Exists !" }]
         });
       }
 
@@ -72,11 +72,8 @@ router.post(
       await task.save();
       res.status(200).json(task);
     } catch (err) {
-      console.log(err.message);
-      res.status(500).send({ 
-        error: {
-          message: e.message
-        }
+      return res.status(500).json({
+        errors: [{ msg: "Error in Saving" }]
       });
     }
   }
@@ -92,11 +89,9 @@ router.get("/tasks", async (req, res) => {
     const tasks = await Task.find({}).populate('assignedTo').populate('dependentTask');
     res.json(tasks);
   } catch (e) {
-    res.send({ 
-      error: {
-        message: e.message
-      }
-     });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Fetching tasks" }]
+    });
   }
 });
 
@@ -110,11 +105,9 @@ router.get("/task/:id", async (req, res) => {
     const task = await Task.findById(req.params.id).populate('assignedTo').populate('dependentTask');
     res.json(task);
   } catch (e) {
-    res.send({ 
-      error: {
-        message: e.message
-      }
-     });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Fetching Task" }]
+    });
   }
 });
 
@@ -130,11 +123,9 @@ router.delete("/task/:id", async (req, res) => {
     const results = await Task.deleteOne(task);
     res.json(results);
   } catch (e) {
-    res.send({ 
-      error: {
-        message: e.message
-      }
-     });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Deleting Task" }]
+    });
   }
 });
 
@@ -173,11 +164,9 @@ router.put("/task/:id", async (req, res) => {
     );
     res.json(task);
   } catch (e) {
-    res.send({ 
-      error: {
-        message: e.message
-      }
-     });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Updating Task" }]
+    });
   }
 });
 

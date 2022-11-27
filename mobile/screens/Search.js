@@ -21,6 +21,7 @@ import { getProjects } from "../store/admin/project/projectActions";
 
 export default function Search({ navigation, route, props }) {
   const { theme } = useSelector((state) => state.commonReducer);
+  const { auth } = useSelector((state) => state.authReducer);
   const styles = getStyles(theme);
   const [searchString, setSearchString] = useState("");
   const { projects } = useSelector((state) => state.projectReducer);
@@ -66,9 +67,7 @@ export default function Search({ navigation, route, props }) {
   }, [route.params?.sortBy]);
 
   useEffect(() => {
-    //! TODO: set to user id from session
-    const userId = "6377b4fb35226ee4c6805a35";
-    let searchedProjects = projects.filter((a) => a.members.includes(userId));
+    let searchedProjects = projects.filter((a) => a.members.includes(auth?.user._id));
     searchedProjects = searchedProjects.filter(
       (a) =>
         a.name.toLowerCase().includes(searchString.toLowerCase()) ||
