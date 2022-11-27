@@ -33,7 +33,9 @@ export default function Person(props) {
               dispatch(changeTheme());
             }, theme, styles, theme == lightColors ? 'sun' : 'moon')}
             {PersonSingleLink("Settings", "settings", () => {}, theme, styles)}
-            {PersonSingleLink("Help", "help-circle", () => {}, theme, styles)}
+            {PersonSingleLink("Help", "help-circle", () => {
+                props.navigation.navigate('Details');
+            }, theme, styles)}
             {PersonSingleLink("About", "info", () => {}, theme, styles)}
         </View>
       </SafeAreaView>

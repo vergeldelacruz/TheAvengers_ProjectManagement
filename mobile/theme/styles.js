@@ -11,7 +11,8 @@ export const commonStyles = {
     fontSemiBold: 'Poppins-SemiBold',
     mainHeading: {
         fontSize: 25,
-        marginBottom: 20,
+        marginTop: 10,
+        marginBottom: 10,
         fontFamily: 'Poppins-SemiBold',
         color: lightColors.dark,
     },
@@ -42,6 +43,7 @@ export const formStyles = {
     },
     submitButton: {
         backgroundColor: lightColors.primary,
+        marginBottom:10,
         padding: 20,
         borderRadius: lightColors.borderRadius,
         display: "flex",
@@ -52,6 +54,7 @@ export const formStyles = {
     },
     submitButton: {
         backgroundColor: lightColors.primary,
+        marginBottom:10,
         padding: 20,
         borderRadius: lightColors.borderRadius,
         display: "flex",
