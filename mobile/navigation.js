@@ -32,8 +32,9 @@ export const AppNavigation = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Group screenOptions={{}}>
-          {user && getAuthenticatedRoutes()}
-          {!user && getAuthenticatedRoutes()}
+          {getUnauthenticatedRoutes()}
+          {/* {user && getAuthenticatedRoutes()}
+          {!user && getAuthenticatedRoutes()} */}
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
@@ -109,7 +110,7 @@ function getAuthenticatedRoutes() {
         name="MyProfile"
         component={Screens.MyProfile}
         listeners={{ focus: () => LightHaptics() }}
-        options={{ ...navigationOptions}}
+        options={{ ...navigationOptions }}
       />
     </>
   );
