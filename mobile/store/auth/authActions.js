@@ -4,6 +4,7 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILED = "LOGIN_FAILED";
 
 export const loginUser = (user) => async (dispatch) => {
+  console.log(API_URL);
   try {
     const response = await fetch(`${API_URL}/login`, {
       method: "POST",

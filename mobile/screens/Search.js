@@ -139,7 +139,7 @@ export default function Search({ navigation, route, props }) {
   };
 
   return (
-    <View style={{ backgroundColor: theme.background, flex: 1 }}>
+    <View style={{ backgroundColor: theme.background, flex: 1, marginTop: 10 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle={theme.barStyle} />
         <View style={{ flex: 1, marginHorizontal: 20 }}>
