@@ -28,7 +28,7 @@ export default function Search({ navigation, route, props }) {
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([
     { name: "All", id: STATUS.ALL },
-    { name: "Pending", id: STATUS.PENDING },
+    { name: "Not Started", id: STATUS.NOT_STARTED },
     { name: "In Progress", id: STATUS.IN_PROGRESS },
     { name: "In Review", id: STATUS.IN_REVIEW },
     { name: "Completed", id: STATUS.COMPLETED },

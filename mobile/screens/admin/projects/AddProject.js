@@ -147,7 +147,7 @@ const AddProject = (props) => {
                         {getTextInput("hours", "Ex. 2", "numeric", "Project Hours")}
                         {getTextInput("cost", "Ex. 250", "numeric", "Project Cost")}
                         {getDropDown("status", "Select Status", [
-                            {label: "Pending", value: STATUS.PENDING},
+                            {label: "Not Started", value: STATUS.NOT_STARTED},
                             {label: "In Progress", value: STATUS.IN_PROGRESS},
                             {label: "In Review", value: STATUS.IN_REVIEW},
                             {label: "Completed", value: STATUS.COMPLETED},

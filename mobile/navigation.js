@@ -80,6 +80,12 @@ function getAuthenticatedRoutes() {
         listeners={{ focus: () => LightHaptics() }}
         options={navigationOptions}
       />
+       <Stack.Screen
+        name="TaskDetails"
+        component={Screens.TaskDetails}
+        listeners={{ focus: () => LightHaptics() }}
+        options={navigationOptions}
+      />
       <Stack.Screen
         name="Admin"
         component={Screens.Admin}

@@ -116,13 +116,13 @@ export const PersonSingleLink = (title, icon, onClick, theme, styles, rightIcon 
 
 export const STATUS = {
     ALL: 'all',
-    PENDING: 'pending',
+    NOT_STARTED: 'not_started',
     IN_PROGRESS: 'in_progress',
     IN_REVIEW: 'in_review',
     COMPLETED: 'completed',
 }
 export const STATUS_COLORS = {
-        [STATUS.PENDING]: lightColors.primary,
+        [STATUS.NOT_STARTED]: lightColors.primary,
         [STATUS.IN_PROGRESS]: lightColors.secondary,
         [STATUS.IN_REVIEW]: lightColors.tertiary,
         [STATUS.COMPLETED]: '#558B2F',
