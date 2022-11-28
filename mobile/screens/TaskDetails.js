@@ -8,6 +8,7 @@ import {
   View,
   FlatList,
   ScrollView,
+  Alert,
 } from "react-native";
 import { lightColors } from "../theme/colors";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +17,8 @@ import { commonStyles, formStyles } from "../theme/styles";
 import { Feather } from "@expo/vector-icons";
 import { STATUS } from "../helpers/common";
 import DropDownPicker from "react-native-dropdown-picker";
-import { updateTask } from '../store/admin/tasks/taskActions';
+import { updateTask } from "../store/admin/tasks/taskActions";
+import { updateProject } from "../store/admin/project/projectActions";
 
 const TaskDetails = (props) => {
   const { theme } = useSelector((state) => state.commonReducer);
@@ -34,12 +36,114 @@ const TaskDetails = (props) => {
   ]);
 
   const [task, setTask] = useState();
+  const [project, setProject] = useState();
+  const [projectTasks, setProjectTasks] = useState();
+  const { projects } = useSelector((state) => state.projectReducer);
+
+  const { tasks } = useSelector((state) => state.taskReducer);
+  const [dependentTask, setDependentTask] = useState();
+
+  useEffect(() => {
+    //console.log("useEffect");
+    setProject(
+      projects.filter(
+        (a) => a._id === props.route.params.item.projectId
+      )[0]
+    );
+    setProjectTasks(
+      tasks.filter((a) => a.projectId === props.route.params.item.projectId)
+    );
+    if (props.route.params.item) {
+      let task = tasks.filter((a) => a._id === props.route.params.item._id)[0];
+      setTask(task);
+      if (task.dependentTask) {
+        setDependentTask(task.dependentTask);
+      }
+      setInitialValues({
+        ...props.route.params.item,
+        hourlyRate: props.route.params.item.hourlyRate.toString(),
+        hoursWorked: props.route.params.item.hoursWorked.toString(),
+        assignedTo: props.route.params.item.assignedTo._id,
+      });
+    }
+  }, [props.route.params.item, tasks]);
+
   const onSave = (e) => {
-    console.log(initialValues);
+    // console.log("dependentTask");
+    // console.log(dependentTask);
+    // if (dependentTask && dependentTask.status !== "completed") {
+    //   Alert.alert("Cannot start task until the dependent task has completed.");
+    //   return;
+    // }
+    let completionDate = "";
+    if (initialValues.status === "completed") {
+      completionDate = new Date();
+    }
     dispatch(
       updateTask({
         ...initialValues,
         id: initialValues._id,
+        completionDate,
+      })
+    );
+    let status = "not_started";
+    let someInProgress =
+      projectTasks
+        .filter((a) => a._id !== task._id)
+        .some((a) => a.status === "in_progress") ||
+      initialValues.status === "in_progress";
+
+    let someInReview =
+      projectTasks
+        .filter((a) => a._id !== task._id)
+        .some((a) => a.status === "in_review") ||
+      initialValues.status === "in_review";
+
+    let someInCompleted =
+      projectTasks
+        .filter((a) => a._id !== task._id)
+        .some((a) => a.status === "completed") ||
+      initialValues.status === "completed";
+
+    let allInCompleted =
+      projectTasks
+        .filter((a) => a._id !== task._id)
+        .every((a) => a.status === "completed") &&
+      initialValues.status === "completed";
+
+    // console.log("someInProgress " + someInProgress);
+    // console.log("someInReview " + someInReview);
+    // console.log("allInCompleted " + allInCompleted);
+
+    if (allInCompleted) {
+      status = "completed";
+    } else if (someInReview) {
+      status = "in_review";
+    } else if (someInProgress) {
+      status = "in_progress";
+    } else if (someInCompleted) {
+      status = "in_progress";
+    }
+
+    let cost = projectTasks
+      .filter((a) => a._id !== task._id)
+      .map((a) => a.hoursWorked * a.hourlyRate)
+      .reduce((prev, next) => prev + next, 0);
+    cost += initialValues.hourlyRate * initialValues.hoursWorked;
+
+    let hours = projectTasks
+      .filter((a) => a._id !== task._id)
+      .map((a) => a.hoursWorked)
+      .reduce((prev, next) => prev + next, 0);
+    hours += +initialValues.hoursWorked;
+
+    dispatch(
+      updateProject({
+        ...project,
+        cost,
+        hours,
+        status,
+        id: project._id,
       })
     );
     props.navigation.goBack();
@@ -141,18 +245,6 @@ const TaskDetails = (props) => {
       </View>
     );
   };
-  useEffect(() => {
-    console.log(props.route.params.item);
-    if (props.route.params.item) {
-      setTask(props.route.params.item);
-      setInitialValues({
-        ...props.route.params.item,
-        hourlyRate: props.route.params.item.hourlyRate.toString(),
-        hoursWorked: props.route.params.item.hoursWorked.toString(),
-        assignedTo: props.route.params.item.assignedTo._id,
-      });
-    }
-  }, [props.route.params.item]);
 
   const onBack = () => {
     props.navigation.goBack();
@@ -182,15 +274,49 @@ const TaskDetails = (props) => {
             {task?.description}
           </Text>
         </View>
-
-        {/* <View>
-            <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
-              Hourly Rate
-            </Text>
-            <View style={{backgroundColor: theme.primary }}>
-              <Text>{task?.hourlyRate}</Text>
+        <View style={styles.itemAttributeWrappers}>
+          <View style={styles.itemAttributeWrapper}>
+            <View style={styles.itemAttribute}>
+              <Text
+                style={{
+                  color: theme.darkGrey,
+                  fontFamily: commonStyles.fontMedium,
+                }}
+              >
+                Hourly Rate
+              </Text>
             </View>
-          </View> */}
+            <View
+              style={{
+                ...styles.subIcon,
+              }}
+            >
+              <Feather name={"dollar-sign"} size={25} color={theme.dark} />
+              <Text style={styles.iconText}>{task?.hourlyRate}</Text>
+            </View>
+          </View>
+          {dependentTask && (
+            <View style={styles.itemAttributeWrapper}>
+              <View style={styles.itemAttribute}>
+                <Text
+                  style={{
+                    color: theme.darkGrey,
+                    fontFamily: commonStyles.fontMedium,
+                  }}
+                >
+                  Dependent Task
+                </Text>
+              </View>
+              <View
+                style={{
+                  ...styles.subIcon,
+                }}
+              >
+                <Text style={styles.iconText}>{dependentTask?.name}</Text>
+              </View>
+            </View>
+          )}
+        </View>
         {getDropDown(
           "status",
           "Select Status",
@@ -200,7 +326,7 @@ const TaskDetails = (props) => {
             { label: "In Review", value: STATUS.IN_REVIEW },
             { label: "Completed", value: STATUS.COMPLETED },
           ],
-          "Task Status",
+          "Status",
           1,
           false,
           "SIMPLE"
@@ -296,14 +422,39 @@ const getStyles = (theme) => {
       marginRight: 10,
       padding: 3,
       paddingHorizontal: 10,
-      backgroundColor: theme.secondary,
+      //backgroundColor: theme.secondary,
       borderRadius: lightColors.borderRadius,
     },
     iconText: {
-      color: "#fff",
+      color: theme.dark,
       fontSize: 10,
       marginLeft: 3,
       fontFamily: commonStyles.fontMedium,
+    },
+    itemAttributeWrappers: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      flexDirection: "column",
+      marginTop: 10,
+      marginBottom: 10,
+      padding: 15,
+      borderRadius: lightColors.borderRadius,
+      backgroundColor: theme.light,
+    },
+    itemAttributeWrapper: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    itemAttribute: {
+      flex: 1,
+      marginTop: 10,
+      display: "flex",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      flexDirection: "row",
     },
   });
 };

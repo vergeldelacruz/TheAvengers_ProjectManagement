@@ -21,22 +21,27 @@ const Details = (props) => {
   const styles = getStyles(theme);
   const [project, setProject] = useState();
   const [members, setMembers] = useState();
+  const { projects } = useSelector((state) => state.projectReducer);
   const { tasks } = useSelector((state) => state.taskReducer);
   const [projectTasks, setProjectTasks] = useState([]);
 
   useEffect(() => {
-    setProject(props.route.params.project);
+    setProject(
+      projects.filter((a) => a._id === props.route.params.project._id)[0]
+    );
     setProjectTasks(
       tasks.filter((a) => a.projectId === props.route.params.project._id)
     );
     setMembers(props.route.params.members);
-  }, [tasks]);
+  }, [projects, tasks]);
 
   const renderItem = (item) => {
     return item ? (
       <TouchableOpacity
         onPress={() => {
-          props.navigation.navigate("TaskDetails", { item });
+          props.navigation.navigate("TaskDetails", {
+            item,
+          });
         }}
       >
         <View style={styles.itemWrapper}>
@@ -57,6 +62,26 @@ const Details = (props) => {
               >
                 <Feather name={"bookmark"} size={15} color={"#fff"} />
                 <Text style={styles.iconText}>{item.status}</Text>
+              </View>
+
+              <View
+                style={{
+                  ...styles.subIcon,
+                }}
+              >
+                <Feather name={"clock"} size={15} color={theme.dark} />
+                <Text style={styles.iconText}>{item.hoursWorked}</Text>
+              </View>
+
+              <View
+                style={{
+                  ...styles.subIcon,
+                }}
+              >
+                <Feather name={"dollar-sign"} size={15} color={theme.dark} />
+                <Text style={styles.iconText}>
+                  {item.hoursWorked * item.hourlyRate}
+                </Text>
               </View>
             </View>
           </View>
@@ -103,20 +128,72 @@ const Details = (props) => {
             {project?.description}
           </Text>
         </View>
-        <View>
-          <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
-            Status
-          </Text>
-          <View
-            style={{
-              ...styles.subIcon,
-              backgroundColor: STATUS_COLORS[project?.status],
-            }}
-          >
-            <Feather name={"bookmark"} size={25} color={"#fff"} />
-            <Text style={styles.iconText}>{project?.status}</Text>
+        <View style={styles.itemAttributeWrappers}>
+          <View style={styles.itemAttributeWrapper}>
+            <View style={styles.itemAttribute}>
+              <Text
+                style={{
+                  color: theme.dark,
+                  fontFamily: commonStyles.fontMedium,
+                }}
+              >
+                Status
+              </Text>
+            </View>
+            <View
+              style={{
+                ...styles.subIcon,
+                backgroundColor: STATUS_COLORS[project?.status],
+              }}
+            >
+              <Feather name={"bookmark"} size={25} color={"#fff"} />
+              <Text style={styles.iconText}>{project?.status}</Text>
+            </View>
+          </View>
+
+          <View style={styles.itemAttributeWrapper}>
+            <View style={styles.itemAttribute}>
+              <Text
+                style={{
+                  color: theme.dark,
+                  fontFamily: commonStyles.fontMedium,
+                }}
+              >
+                Hours Worked
+              </Text>
+            </View>
+            <View
+              style={{
+                ...styles.subIcon,
+              }}
+            >
+              <Feather name={"clock"} size={25} color={theme.dark} />
+              <Text style={styles.iconText}>{project?.hours}</Text>
+            </View>
+          </View>
+
+          <View style={styles.itemAttributeWrapper}>
+            <View style={styles.itemAttribute}>
+              <Text
+                style={{
+                  color: theme.dark,
+                  fontFamily: commonStyles.fontMedium,
+                }}
+              >
+                Cost
+              </Text>
+            </View>
+            <View
+              style={{
+                ...styles.subIcon,
+              }}
+            >
+              <Feather name={"dollar-sign"} size={25} color={theme.dark} />
+              <Text style={styles.iconText}>{project?.cost}</Text>
+            </View>
           </View>
         </View>
+
         <View>
           <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
             Tasks
@@ -228,10 +305,35 @@ const getStyles = (theme) => {
       borderRadius: lightColors.borderRadius,
     },
     iconText: {
-      color: "#fff",
+      color: theme.dark,
       fontSize: 10,
       marginLeft: 3,
       fontFamily: commonStyles.fontMedium,
+    },
+    itemAttributeWrappers: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      flexDirection: "column",
+      marginTop: 10,
+      marginBottom: 10,
+      padding: 15,
+      borderRadius: lightColors.borderRadius,
+      backgroundColor: theme.light,
+    },
+    itemAttributeWrapper: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    itemAttribute: {
+      flex: 1,
+      marginTop: 10,
+      display: "flex",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      flexDirection: "row",
     },
   });
 };

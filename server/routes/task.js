@@ -145,9 +145,12 @@ router.put("/task/:id", async (req, res) => {
       endDate,
       assignedTo,
       hourlyRate,
-      hoursWorked
+      hoursWorked,
+      completionDate
     } = req.body;
     hoursWorked = hoursWorked || 0;
+    //const tasks = await Task.find({}).populate('assignedTo').populate('dependentTask');
+
     let task = await Task.findByIdAndUpdate(
       id,
       {
@@ -158,10 +161,11 @@ router.put("/task/:id", async (req, res) => {
         endDate,
         assignedTo,
         hourlyRate,
-        hoursWorked
+        hoursWorked,
+        completionDate
       },
       { new: true }
-    );
+    ).populate('assignedTo').populate('dependentTask');
     res.json(task);
   } catch (e) {
     return res.status(500).json({

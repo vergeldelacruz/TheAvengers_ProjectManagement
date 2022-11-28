@@ -39,7 +39,6 @@ export default function Home(props) {
   }, []);
 
   useEffect(() => {
-    console.log("Home " + auth?.user._id);
     setUserProjects(projects.filter((a) => a.members.includes(auth?.user._id)));
     setUserTasks(tasks.filter((a) => a.assignedTo._id === auth?.user._id));
   }, [projects,tasks,auth]);
