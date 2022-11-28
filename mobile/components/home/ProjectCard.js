@@ -4,16 +4,19 @@ import { useSelector } from "react-redux";
 import { Feather } from "react-native-vector-icons";
 import moment from "moment";
 
-export default function ProjectCard({ project, navigation }) {
+export default function ProjectCard({ projectId, navigation }) {
   const { theme } = useSelector((state) => state.commonReducer);
+  const { projects } = useSelector((state) => state.projectReducer);
   const { tasks } = useSelector((state) => state.taskReducer);
   const { users } = useSelector((state) => state.userReducer);
   const [members, setMembers] = useState([]);
+  const [project, setProject] = useState();
+
   const styles = getStyles(theme);
   let [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    let projectTasks = tasks.filter((task) => task.projectId === project._id);
+    let projectTasks = tasks.filter((task) => task.projectId === projectId);
     let completedTasks = projectTasks.filter(
       (task) => task.status.toLowerCase() == "completed"
     );
@@ -22,23 +25,25 @@ export default function ProjectCard({ project, navigation }) {
         ? Math.round((completedTasks.length / projectTasks.length) * 100)
         : 0;
     setProgress(progress);
+    let project = projects.filter(a=> a._id === projectId)[0];
+    setProject(project);
     setMembers(users.filter((a) => project.members.includes(a._id)));
-  }, [tasks,users]);
+  }, [projects,tasks,users]);
 
   return (
-    <View style={{ ...styles.cardWrapper, backgroundColor: project.color }}>
+    <View style={{ ...styles.cardWrapper, backgroundColor: project?.color }}>
       <TouchableOpacity
         onPress={() => {
           navigation.navigate("Details", { project, members, tasks });
         }}
       >
         <Text numberOfLines={2} style={styles.heading}>
-          {project.name}
+          {project?.name}
         </Text>
         <View style={styles.calendar}>
           <Feather name={"calendar"} size={15} color={"#fff"} />
           <Text style={{ color: "#fff", marginLeft: 5 }}>
-            {moment(project.createdAt).format("DD MMM, YYYY")}
+            {moment(project?.createdAt).format("DD MMM, YYYY")}
           </Text>
         </View>
         <View style={styles.progressWrapper}>

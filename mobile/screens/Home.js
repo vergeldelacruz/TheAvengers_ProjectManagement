@@ -52,7 +52,7 @@ export default function Home(props) {
           <View style={{ ...commonStyles.mainContainer }}>
             <FlatList
               data={userProjects}
-              renderItem={({ item }) => <ProjectCard project={item} navigation={props.navigation} />}
+              renderItem={({ item }) => <ProjectCard projectId={item._id} navigation={props.navigation} />}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             />
