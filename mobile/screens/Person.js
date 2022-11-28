@@ -22,9 +22,9 @@ export default function Person(props) {
         <StatusBar barStyle={theme.barStyle}/>
         <View>
             <Text style={{...commonStyles.mainHeading, color: theme.dark}}>Hi! Litson</Text>
-            {PersonSingleLink('My Profile', 'user', () => {
+            {/* {PersonSingleLink('My Profile', 'user', () => {
               props.navigation.navigate('MyProfile');
-            }, theme, styles)}
+            }, theme, styles)} */}
             {PersonSingleLink('My Projects', 'briefcase', () => {}, theme, styles)}
             {PersonSingleLink('Admin Panel', 'database', () => {
               props.navigation.navigate('Admin');
@@ -34,7 +34,6 @@ export default function Person(props) {
             }, theme, styles, theme == lightColors ? 'sun' : 'moon')}
             {PersonSingleLink("Settings", "settings", () => {}, theme, styles)}
             {PersonSingleLink("Help", "help-circle", () => {
-                props.navigation.navigate('Details');
             }, theme, styles)}
             {PersonSingleLink("About", "info", () => {}, theme, styles)}
         </View>

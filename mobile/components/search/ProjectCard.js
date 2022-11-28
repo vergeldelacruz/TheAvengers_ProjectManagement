@@ -7,16 +7,18 @@ import { STATUS_COLORS } from "../../helpers/common";
 import { lightColors } from "../../theme/colors";
 import { commonStyles } from "../../theme/styles";
 
-export default function ProjectCard({ project, navigation }) {
+export default function ProjectCard({ projectId, navigation }) {
   const { theme } = useSelector((state) => state.commonReducer);
+  const { projects } = useSelector((state) => state.projectReducer);
   const { tasks } = useSelector((state) => state.taskReducer);
   const { users } = useSelector((state) => state.userReducer);
   const [members, setMembers] = useState([]);
+  const [project, setProject] = useState();
   const styles = getStyles(theme);
   let [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    let projectTasks = tasks.filter((task) => task.projectId === project._id);
+    let projectTasks = tasks.filter((task) => task.projectId === projectId);
     let completedTasks = projectTasks.filter(
       (task) => task.status.toLowerCase() == "completed"
     );
@@ -25,14 +27,17 @@ export default function ProjectCard({ project, navigation }) {
         ? Math.round((completedTasks.length / projectTasks.length) * 100)
         : 0;
     setProgress(progress);
+    let project = projects.filter(a=> a._id === projectId)[0];
+    setProject(project);
     setMembers(users.filter((a) => project.members.includes(a._id)));
-  }, [tasks,users]);
+    
+  }, [projects,tasks,users]);
 
   return (
     <View
       style={{
         ...styles.cardWrapper,
-        backgroundColor: project.color,
+        backgroundColor: project?.color,
       }}
     >
       <TouchableOpacity
@@ -41,15 +46,15 @@ export default function ProjectCard({ project, navigation }) {
         }}
       >
         <Text numberOfLines={2} style={styles.heading}>
-          {project.name}
+          {project?.name}
         </Text>
         <Text numberOfLines={2} style={styles.subHeading}>
-          {project.description}
+          {project?.description}
         </Text>
         <View style={styles.calendar}>
           <Feather name={"calendar"} size={15} color={"#fff"} />
           <Text style={{ color: "#fff", marginLeft: 5 }}>
-            {moment(project.createdAt).format("DD MMM, YYYY")}
+            {moment(project?.createdAt).format("DD MMM, YYYY")}
           </Text>
         </View>
         <View style={styles.progressWrapper}>
@@ -59,15 +64,15 @@ export default function ProjectCard({ project, navigation }) {
           <View
             style={{
               ...styles.subIcon,
-              backgroundColor: STATUS_COLORS[project.status],
+              backgroundColor: STATUS_COLORS[project?.status],
             }}
           >
             <Feather name={"bookmark"} size={15} color={"#fff"} />
-            <Text style={styles.iconText}>{project.status}</Text>
+            <Text style={styles.iconText}>{project?.status}</Text>
           </View>
         </View>
         <View style={styles.costWrapper}>
-          <Text style={styles.cost}>$ {project.cost}</Text>
+          <Text style={styles.cost}>$ {project?.cost}</Text>
         </View>
       </TouchableOpacity>
     </View>

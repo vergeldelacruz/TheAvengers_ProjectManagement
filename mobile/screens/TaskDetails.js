@@ -6,8 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  FlatList,
-  ScrollView,
   Alert,
 } from "react-native";
 import { lightColors } from "../theme/colors";
@@ -17,8 +15,9 @@ import { commonStyles, formStyles } from "../theme/styles";
 import { Feather } from "@expo/vector-icons";
 import { STATUS } from "../helpers/common";
 import DropDownPicker from "react-native-dropdown-picker";
-import { updateTask } from "../store/admin/tasks/taskActions";
+import { getTask, updateTask } from "../store/admin/tasks/taskActions";
 import { updateProject } from "../store/admin/project/projectActions";
+import { STATUS_COLORS } from "../helpers/common";
 
 const TaskDetails = (props) => {
   const { theme } = useSelector((state) => state.commonReducer);
@@ -44,11 +43,8 @@ const TaskDetails = (props) => {
   const [dependentTask, setDependentTask] = useState();
 
   useEffect(() => {
-    //console.log("useEffect");
     setProject(
-      projects.filter(
-        (a) => a._id === props.route.params.item.projectId
-      )[0]
+      projects.filter((a) => a._id === props.route.params.item.projectId)[0]
     );
     setProjectTasks(
       tasks.filter((a) => a.projectId === props.route.params.item.projectId)
@@ -69,14 +65,16 @@ const TaskDetails = (props) => {
   }, [props.route.params.item, tasks]);
 
   const onSave = (e) => {
-    // console.log("dependentTask");
-    // console.log(dependentTask);
-    // if (dependentTask && dependentTask.status !== "completed") {
-    //   Alert.alert("Cannot start task until the dependent task has completed.");
-    //   return;
-    // }
+    if (dependentTask && dependentTask.status !== "completed") {
+      Alert.alert("Cannot start task until the dependent task has completed.");
+      return;
+    }
     let completionDate = "";
     if (initialValues.status === "completed") {
+      if (initialValues.hoursWorked <= 0) {
+        Alert.alert("Please enter hours worked.");
+        return;
+      }
       completionDate = new Date();
     }
     dispatch(
@@ -146,6 +144,7 @@ const TaskDetails = (props) => {
         id: project._id,
       })
     );
+    dispatch(getTask());
     props.navigation.goBack();
   };
   const getDropDown = (
@@ -313,6 +312,29 @@ const TaskDetails = (props) => {
                 }}
               >
                 <Text style={styles.iconText}>{dependentTask?.name}</Text>
+              </View>
+            </View>
+          )}
+          {dependentTask && (
+            <View style={styles.itemAttributeWrapper}>
+              <View style={styles.itemAttribute}>
+                <Text
+                  style={{
+                    color: theme.darkGrey,
+                    fontFamily: commonStyles.fontMedium,
+                  }}
+                >
+                  Dependent Task Status
+                </Text>
+              </View>
+              <View
+                style={{
+                  ...styles.subIcon,
+                  backgroundColor: STATUS_COLORS[dependentTask?.status],
+                }}
+              >
+                <Feather name={"bookmark"} size={15} color={"#fff"} />
+                <Text style={styles.iconText}>{dependentTask?.status}</Text>
               </View>
             </View>
           )}
