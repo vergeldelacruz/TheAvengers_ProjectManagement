@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { getTheme, LightHaptics, getSessionInfoFromLocal,removeSessionInfoFromLocal, setSessionInfoInLocal } from "./helpers/common";
+import { getTheme, LightHaptics, getSessionInfoFromLocal, removeSessionInfoFromLocal, setSessionInfoInLocal } from "./helpers/common";
 import { Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -32,7 +32,7 @@ export const AppNavigation = () => {
 
   useEffect(() => {
     //console.log(auth);
-    if(auth) {
+    if (auth) {
       setUser(auth.user);
       setSessionInfoInLocal(auth);
     } else {
@@ -79,7 +79,7 @@ function getAuthenticatedRoutes() {
         listeners={{ focus: () => LightHaptics() }}
         options={navigationOptions}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="TaskDetails"
         component={Screens.TaskDetails}
         listeners={{ focus: () => LightHaptics() }}
