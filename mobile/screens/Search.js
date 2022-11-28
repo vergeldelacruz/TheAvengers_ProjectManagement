@@ -21,13 +21,14 @@ import { getProjects } from "../store/admin/project/projectActions";
 
 export default function Search({ navigation, route, props }) {
   const { theme } = useSelector((state) => state.commonReducer);
+  const { auth } = useSelector((state) => state.authReducer);
   const styles = getStyles(theme);
   const [searchString, setSearchString] = useState("");
   const { projects } = useSelector((state) => state.projectReducer);
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([
     { name: "All", id: STATUS.ALL },
-    { name: "Pending", id: STATUS.PENDING },
+    { name: "Not Started", id: STATUS.NOT_STARTED },
     { name: "In Progress", id: STATUS.IN_PROGRESS },
     { name: "In Review", id: STATUS.IN_REVIEW },
     { name: "Completed", id: STATUS.COMPLETED },
@@ -66,9 +67,7 @@ export default function Search({ navigation, route, props }) {
   }, [route.params?.sortBy]);
 
   useEffect(() => {
-    //! TODO: set to user id from session
-    const userId = "6377b4fb35226ee4c6805a35";
-    let searchedProjects = projects.filter((a) => a.members.includes(userId));
+    let searchedProjects = projects.filter((a) => a.members.includes(auth?.user._id));
     searchedProjects = searchedProjects.filter(
       (a) =>
         a.name.toLowerCase().includes(searchString.toLowerCase()) ||

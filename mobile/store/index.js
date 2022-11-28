@@ -4,12 +4,14 @@ import commonReducer from './common/commonReducers';
 import projectReducer from './admin/project/projectReducers';
 import userReducer from './admin/user/userReducers';
 import taskReducer from './admin/tasks/taskReducers';
+import authReducer from './auth/authReducers';
 
 const rootReducer = combineReducers({ 
     commonReducer,
     projectReducer,
     userReducer,
-    taskReducer
+    taskReducer,
+    authReducer
 });
 
 export const Store = createStore(rootReducer, applyMiddleware(thunk));

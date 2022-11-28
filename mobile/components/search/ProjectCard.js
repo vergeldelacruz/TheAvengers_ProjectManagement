@@ -11,11 +11,8 @@ export default function ProjectCard({ project, navigation }) {
   const { theme } = useSelector((state) => state.commonReducer);
   const { tasks } = useSelector((state) => state.taskReducer);
   const { users } = useSelector((state) => state.userReducer);
-
   const [members, setMembers] = useState([]);
-
   const styles = getStyles(theme);
-
   let [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -29,7 +26,7 @@ export default function ProjectCard({ project, navigation }) {
         : 0;
     setProgress(progress);
     setMembers(users.filter((a) => project.members.includes(a._id)));
-  }, []);
+  }, [tasks,users]);
 
   return (
     <View
@@ -40,7 +37,7 @@ export default function ProjectCard({ project, navigation }) {
     >
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("Details", { project, members , tasks  });
+          navigation.navigate("Details", { project, members, tasks });
         }}
       >
         <Text numberOfLines={2} style={styles.heading}>

@@ -36,7 +36,7 @@ router.post(
       });
       if (project) {
         return res.status(400).json({
-          msg: "Project Already Exists",
+          errors: [{ msg: "Project Already Exists" }],
         });
       }
 
@@ -46,14 +46,15 @@ router.post(
         status,
         hours,
         cost,
-        members
+        members,
       });
 
       await project.save();
       res.status(200).json(project);
     } catch (err) {
-      console.log(err.message);
-      res.status(500).send("Error in Saving");
+      return res.status(500).json({
+        errors: [{ msg: "Error in Saving" }],
+      });
     }
   }
 );
@@ -68,7 +69,9 @@ router.get("/projects", async (req, res) => {
     const projects = await Project.find({});
     res.json(projects);
   } catch (e) {
-    res.send({ message: "Error in Fetching projects" });
+    return res.status(400).json({
+      errors: [{ msg: "Error in Fetching projects" }],
+    });
   }
 });
 
@@ -82,7 +85,9 @@ router.get("/project/:id", auth, async (req, res) => {
     const project = await Project.findById(req.params.id);
     res.json(project);
   } catch (e) {
-    res.send({ message: "Error in Fetching project" });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Fetching project" }],
+    });
   }
 });
 
@@ -98,11 +103,9 @@ router.delete("/project/:id", async (req, res) => {
     const results = await Project.deleteOne(project);
     res.json(results);
   } catch (e) {
-    res.send({ 
-      error: {
-        message: e.message
-      }
-     });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Deleting project" }],
+    });
   }
 });
 
@@ -125,13 +128,15 @@ router.put("/project/:id", async (req, res) => {
         status,
         hours,
         cost,
-        members
+        members,
       },
       { new: true }
     );
     res.json(project);
   } catch (e) {
-    res.send({ message: "Error in Updating project" });
+    return res.status(500).json({
+      errors: [{ msg: "Error in Updating project" }],
+    });
   }
 });
 
@@ -155,8 +160,9 @@ router.post(
       await project.save();
       res.status(200).json(project);
     } catch (err) {
-      console.log(err.message);
-      res.status(500).send("Error in Saving");
+      return res.status(500).json({
+        errors: [{ msg: "Error in Saving" }],
+      });
     }
   }
 );

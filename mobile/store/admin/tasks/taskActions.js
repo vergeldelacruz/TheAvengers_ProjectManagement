@@ -43,7 +43,7 @@ export const addTask = task => async dispatch => {
             body: JSON.stringify(task),
         });
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         if(!data.errors){
             dispatch({
                 type: ADD_TASK,
@@ -65,7 +65,7 @@ export const updateTask = task => async dispatch => {
             body: JSON.stringify(task),
         });
         const data = await response.json();
-        //console.log(data);
+        console.log(data);
         if(!data.errors){
             dispatch({
                 type: UPDATE_TASK,

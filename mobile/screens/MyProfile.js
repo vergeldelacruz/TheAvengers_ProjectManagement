@@ -7,26 +7,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { lightColors } from "../theme/colors";
-import { useDispatch, useSelector } from "react-redux";
-// import {
-//   setUserId,
-//   setUserFirstName,
-//   setUserLastName,
-//   setUserRole,
-// } from "../redux/actions";
+import { useSelector } from "react-redux";
 import BackButton from "../components/common/back-button";
 import { commonStyles, formStyles } from "../theme/styles";
 
 const MyProfile = ({ navigation }) => {
   const { theme } = useSelector((state) => state.commonReducer);
-
-  const { userId, userFirstName, userLastName, userRole, userEmail } =
-    useSelector((state) => state.userReducer);
-
-  const [email, setEmail] = useState(userEmail);
-  const [firstName, setFirstName] = useState(userFirstName);
-  const [lastName, setLastName] = useState(userLastName);
+  const { auth } = useSelector((state) => state.authReducer);
+  const [email, setEmail] = useState(auth?.user.email);
+  const [firstName, setFirstName] = useState(auth?.user.firstName);
+  const [lastName, setLastName] = useState(auth?.user.lastName);
 
   const onBack = () => {
     navigation.goBack();
@@ -45,7 +35,9 @@ const MyProfile = ({ navigation }) => {
           My Profile
         </Text>
         <View>
-          <Text style={{...formStyles.label, color: theme.darkGrey}}>First Name</Text>
+          <Text style={{ ...formStyles.label, color: theme.darkGrey }}>
+            First Name
+          </Text>
           <TextInput
             style={{
               ...formStyles.input,
@@ -53,13 +45,16 @@ const MyProfile = ({ navigation }) => {
               color: theme.dark,
             }}
             placeholder="Your First Name"
+            placeholderTextColor={theme.darkGrey}
             value={firstName}
             onChangeText={(a) => setFirstName(a)}
             editable={false}
           />
         </View>
         <View>
-          <Text style={{...formStyles.label, color: theme.darkGrey}}>Last Name</Text>
+          <Text style={{ ...formStyles.label, color: theme.darkGrey }}>
+            Last Name
+          </Text>
           <TextInput
             style={{
               ...formStyles.input,
@@ -67,13 +62,16 @@ const MyProfile = ({ navigation }) => {
               color: theme.dark,
             }}
             placeholder="Your Last Name"
+            placeholderTextColor={theme.darkGrey}
             value={lastName}
             onChangeText={(a) => setLastName(a)}
             editable={false}
           />
         </View>
         <View>
-          <Text style={{...formStyles.label, color: theme.darkGrey}}>Email</Text>
+          <Text style={{ ...formStyles.label, color: theme.darkGrey }}>
+            Email
+          </Text>
           <TextInput
             style={{
               ...formStyles.input,
@@ -96,6 +94,4 @@ const MyProfile = ({ navigation }) => {
 
 export default MyProfile;
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});

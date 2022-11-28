@@ -11,39 +11,32 @@ import {
 } from "react-native";
 import { lightColors } from "../theme/colors";
 import { useDispatch, useSelector } from "react-redux";
-// import {
-//   setUserId,
-//   setUserFirstName,
-//   setUserLastName,
-//   setUserRole,
-// } from "../redux/actions";
 import BackButton from "../components/common/back-button";
-import { commonStyles, formStyles } from "../theme/styles";
+import { commonStyles } from "../theme/styles";
 import { Feather } from "@expo/vector-icons";
+import { STATUS_COLORS } from "../helpers/common";
 
 const Details = (props) => {
   const { theme } = useSelector((state) => state.commonReducer);
   const styles = getStyles(theme);
-
   const [project, setProject] = useState();
-  const [tasks, setTasks] = useState();
   const [members, setMembers] = useState();
+  const { tasks } = useSelector((state) => state.taskReducer);
+  const [projectTasks, setProjectTasks] = useState([]);
 
   useEffect(() => {
     setProject(props.route.params.project);
-    setTasks(
-      props.route.params.tasks.filter(
-        (a) => a.projectId === props.route.params.project._id
-      )
+    setProjectTasks(
+      tasks.filter((a) => a.projectId === props.route.params.project._id)
     );
     setMembers(props.route.params.members);
-  }, []);
+  }, [tasks]);
 
   const renderItem = (item) => {
     return item ? (
       <TouchableOpacity
         onPress={() => {
-          //props.navigation.navigate("AddTask", { item, isEdit: true });
+          props.navigation.navigate("TaskDetails", { item });
         }}
       >
         <View style={styles.itemWrapper}>
@@ -57,7 +50,10 @@ const Details = (props) => {
             </Text>
             <View style={styles.icons}>
               <View
-                style={{ ...styles.subIcon, backgroundColor: theme.primary }}
+                style={{
+                  ...styles.subIcon,
+                  backgroundColor: STATUS_COLORS[item.status],
+                }}
               >
                 <Feather name={"bookmark"} size={15} color={"#fff"} />
                 <Text style={styles.iconText}>{item.status}</Text>
@@ -98,48 +94,53 @@ const Details = (props) => {
       }}
     >
       <SafeAreaView style={{ flex: 1 }}>
-          <BackButton navigation={props.navigation}></BackButton>
-          <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
-            {project?.name}
+        <BackButton navigation={props.navigation}></BackButton>
+        <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
+          {project?.name}
+        </Text>
+        <View>
+          <Text style={{ ...commonStyles.fontRegular, color: theme.dark }}>
+            {project?.description}
           </Text>
-          <View>
-            <Text style={{ ...commonStyles.fontRegular, color: theme.dark }}>
-              {project?.description}
-            </Text>
+        </View>
+        <View>
+          <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
+            Status
+          </Text>
+          <View
+            style={{
+              ...styles.subIcon,
+              backgroundColor: STATUS_COLORS[project?.status],
+            }}
+          >
+            <Feather name={"bookmark"} size={25} color={"#fff"} />
+            <Text style={styles.iconText}>{project?.status}</Text>
           </View>
-          <View>
-            <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
-              Status
-            </Text>
-            <View style={{ ...styles.subIcon, backgroundColor: theme.primary }}>
-              <Feather name={"bookmark"} size={25} color={"#fff"} />
-              <Text style={styles.iconText}>{project?.status}</Text>
-            </View>
-          </View>
-          <View>
-            <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
-              Tasks
-            </Text>
-            <FlatList
-              keyExtractor={item => item._id}
-              data={tasks}
-              renderItem={({ item }) => renderItem(item)}
-            />
-          </View>
-          <View>
-            <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
-              Members
-            </Text>
-            <FlatList
-              keyExtractor={item => item._id}
-              data={members}
-              renderItem={({ item }) => renderMember(item)}
-            />
-          </View>
+        </View>
+        <View>
+          <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
+            Tasks
+          </Text>
+          <FlatList
+            keyExtractor={(item) => item._id}
+            data={projectTasks}
+            renderItem={({ item }) => renderItem(item)}
+          />
+        </View>
+        <View>
+          <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
+            Members
+          </Text>
+          <FlatList
+            keyExtractor={(item) => item._id}
+            data={members}
+            renderItem={({ item }) => renderMember(item)}
+          />
+        </View>
 
-          <TouchableOpacity style={formStyles.submitButton} onPress={onBack}>
+        {/* <TouchableOpacity style={formStyles.submitButton} onPress={onBack}>
             <Text style={formStyles.buttonText}>Mark as complete</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
       </SafeAreaView>
     </View>
   );
@@ -224,7 +225,6 @@ const getStyles = (theme) => {
       marginRight: 10,
       padding: 3,
       paddingHorizontal: 10,
-      backgroundColor: theme.secondary,
       borderRadius: lightColors.borderRadius,
     },
     iconText: {

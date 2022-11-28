@@ -176,7 +176,7 @@ const AddTask = (props) => {
                         {getTextInput("name", "Ex. Nodejs Task", "default", "Task Name")}
                         {getTextInput("description", "Ex. TODO", "default", "Task Description")}
                         {getDropDown("status", "Select Status", [
-                            {label: "Pending", value: STATUS.PENDING},
+                            {label: "Not Started", value: STATUS.NOT_STARTED},
                             {label: "In Progress", value: STATUS.IN_PROGRESS},
                             {label: "In Review", value: STATUS.IN_REVIEW},
                             {label: "Completed", value: STATUS.COMPLETED},
