@@ -34,7 +34,6 @@ export const setTask = tasks => dispatch => {
 export const addTask = task => async dispatch => {
     try {
         let projectId = task.projectId;
-        console.log(task);
         const response = await fetch(`${API_URL}/project/${projectId}/task`, {
             method: 'POST',
             headers: {
@@ -65,7 +64,7 @@ export const updateTask = task => async dispatch => {
             body: JSON.stringify(task),
         });
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         if(!data.errors){
             dispatch({
                 type: UPDATE_TASK,
@@ -87,7 +86,7 @@ export const deleteTask = task => async dispatch => {
             body: JSON.stringify(task),
         });
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         dispatch({
             type: DELETE_TASK,
             payload: task,

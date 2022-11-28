@@ -46,7 +46,6 @@ export const AppNavigation = () => {
       //console.log("auth", auth);
       if (auth) {
         setUser(auth.user);
-        console.log("setting user");
       }
     }
     checkSession();

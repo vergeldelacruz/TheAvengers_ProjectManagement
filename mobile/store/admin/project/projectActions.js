@@ -83,7 +83,7 @@ export const deleteProject = project => async dispatch => {
             body: JSON.stringify(project),
         });
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         dispatch({
             type: DELETE_PROJECT,
             payload: project,
