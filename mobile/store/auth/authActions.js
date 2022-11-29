@@ -6,8 +6,6 @@ export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAILED = "REGISTER_FAILED";
 
 export const loginUser = (user) => async (dispatch) => {
-
-  console.log("LOGIN ", API_URL)
   try {
     const response = await fetch(`${API_URL}/login`, {
       method: "POST",

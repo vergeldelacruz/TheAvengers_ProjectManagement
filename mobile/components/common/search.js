@@ -13,7 +13,7 @@ const SearchInput = ({searchString,onSearch}) => {
             <TextInput 
                 placeholderTextColor={lightColors.grey}
                 placeholder='Search here...' 
-                style={{...styles.input, backgroundColor: theme.light, borderRadius: theme.borderRadius}} value={searchString} onChangeText={onSearch.bind(this)} />
+                style={{...styles.input, color: theme.dark, backgroundColor: theme.light, borderRadius: theme.borderRadius}} value={searchString} onChangeText={onSearch.bind(this)} />
             <Feather name="search" size={23} style={styles.icon} color={lightColors.grey} />
         </View>
     );

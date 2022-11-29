@@ -8,6 +8,7 @@ import {
   View,
   FlatList,
   ScrollView,
+  LogBox
 } from "react-native";
 import { lightColors } from "../theme/colors";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +35,10 @@ const Details = (props) => {
     );
     setMembers(props.route.params.members);
   }, [projects, tasks]);
+
+  useEffect(() => {
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
+  }, [])
 
   const renderItem = (item) => {
     return item ? (
@@ -120,6 +125,7 @@ const Details = (props) => {
     >
       <SafeAreaView style={{ flex: 1 }}>
         <BackButton navigation={props.navigation}></BackButton>
+        <ScrollView>
         <Text style={{ ...commonStyles.mainHeading, color: theme.dark }}>
           {project?.name}
         </Text>
@@ -218,6 +224,7 @@ const Details = (props) => {
         {/* <TouchableOpacity style={formStyles.submitButton} onPress={onBack}>
             <Text style={formStyles.buttonText}>Mark as complete</Text>
           </TouchableOpacity> */}
+                  </ScrollView>
       </SafeAreaView>
     </View>
   );

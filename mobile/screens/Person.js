@@ -11,6 +11,7 @@ export default function Person(props) {
   const { theme } = useSelector((state) => state.commonReducer);
   const dispatch = useDispatch();
   const styles = getStyles(theme);
+  const { auth } = useSelector((state) => state.authReducer);
 
   return (
     <View style={{
@@ -21,11 +22,11 @@ export default function Person(props) {
       <SafeAreaView>
         <StatusBar barStyle={theme.barStyle}/>
         <View>
-            <Text style={{...commonStyles.mainHeading, color: theme.dark}}>Hi! Litson</Text>
-            {/* {PersonSingleLink('My Profile', 'user', () => {
+            <Text style={{...commonStyles.mainHeading, color: theme.dark}}>Hi! {auth?.user.firstName}</Text>
+             {PersonSingleLink('My Profile', 'user', () => {
               props.navigation.navigate('MyProfile');
-            }, theme, styles)} */}
-            {PersonSingleLink('My Projects', 'briefcase', () => {}, theme, styles)}
+            }, theme, styles)} 
+            {/* {PersonSingleLink('My Projects', 'briefcase', () => {}, theme, styles)} */}
             {PersonSingleLink('Admin Panel', 'database', () => {
               props.navigation.navigate('Admin');
             }, theme, styles)}
